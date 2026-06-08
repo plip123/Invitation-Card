@@ -1,9 +1,5 @@
-/**
- * DEMO: Mock RSVP implementation — no Firebase required.
- *
- * Valid demo token: DEMO123
- * The demo shows the full confirmation flow without a real backend.
- */
+import { doc, getDoc, updateDoc } from 'firebase/firestore';
+import { db } from './firebase';
 
 export interface Guest {
   token: string;
@@ -18,60 +14,34 @@ export interface Guest {
   name?: string;
 }
 
-const DEMO_GUESTS: Record<string, Guest> = {
-  DEMO123: {
-    token: 'DEMO123',
-    name: 'Invitado Demo',
-    maxGuests: 2,
-    status: 'pending',
-    confirmedGuests: 0,
-    invitees: [
-      { fullName: 'Nombre Apellido' },
-      { fullName: 'Otro Apellido' },
-    ],
-  },
-  DEMO456: {
-    token: 'DEMO456',
-    name: 'Familia Demo',
-    maxGuests: 4,
-    status: 'pending',
-    confirmedGuests: 0,
-    invitees: [
-      { fullName: 'Nombre Apellido' },
-      { fullName: 'Segundo Apellido' },
-    ],
-  },
-};
-
-// Simple runtime store so confirmations persist during the session
-const runtimeStore: Record<string, Guest> = structuredClone(DEMO_GUESTS);
-
-/** Simulate a small async delay to replicate real calls */
-function delay(ms = 350): Promise<void> {
-  return new Promise((resolve) => setTimeout(resolve, ms));
-}
-
 /**
- * Validate token and return guest data.
- * Returns null if token is invalid.
+ * Validate token against Firestore guests collection.
+ * Returns null if token is not found.
  */
 export async function validateRSVPToken(token: string): Promise<Guest | null> {
-  await delay();
   const key = token.trim().toUpperCase();
-  return runtimeStore[key] ?? null;
+  try {
+    const snap = await getDoc(doc(db, 'guests', key));
+    if (!snap.exists()) return null;
+    return snap.data() as Guest;
+  } catch {
+    return null;
+  }
 }
 
 /**
- * Submit RSVP confirmation (mock — no real persistence).
+ * Submit RSVP — updates status and confirmedGuests in Firestore.
  */
 export async function submitRSVP(
   token: string,
   confirmedGuests: number,
   status: 'confirmed' | 'declined',
 ): Promise<boolean> {
-  await delay();
   const key = token.trim().toUpperCase();
-  if (!runtimeStore[key]) return false;
-  runtimeStore[key] = { ...runtimeStore[key], status, confirmedGuests };
-  return true;
+  try {
+    await updateDoc(doc(db, 'guests', key), { status, confirmedGuests });
+    return true;
+  } catch {
+    return false;
+  }
 }

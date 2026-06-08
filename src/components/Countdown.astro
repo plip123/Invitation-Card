@@ -1,10 +1,10 @@
 ---
 // Demo: fecha futura genérica — 6 meses desde hoy aprox.
-const weddingDate = "2026-09-12T17:00:00";
+const weddingDate = "2026-08-15T19:00:00";
 ---
 
 <div class="countdown-container" data-wedding-date={weddingDate}>
-  <p class="countdown-kicker">Para nuestra boda</p>
+  <p class="countdown-kicker">Para mis XV años</p>
   <h2>Cuenta regresiva</h2>
   <div class="countdown" id="countdown">
     <div class="time-unit">
@@ -43,7 +43,7 @@ const weddingDate = "2026-09-12T17:00:00";
   .countdown-container::after {
     content: "❦";
     position: absolute;
-    color: #8f7e6d;
+    color: var(--primary);
     opacity: 0.28;
     font-size: 1.25rem;
   }

@@ -11,7 +11,7 @@ const { title, skipPrivacyGate = false } = Astro.props;
 <html lang="es">
   <head>
     <meta charset="UTF-8" />
-    <meta name="description" content="Invitación de boda — Demo" />
+    <meta name="description" content="Invitación XV Años — Antonella Di Maggio" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -32,9 +32,9 @@ const { title, skipPrivacyGate = false } = Astro.props;
           <main id="privacy-gate" class="privacy-gate-main">
             <section class="privacy-gate-card" aria-label="Acceso privado">
               <h1>Acceso privado</h1>
-              <p>Ingresa un código para ver la invitación.</p>
+              <p>Ingresa el código de tu invitación para continuar.</p>
               <p class="demo-hint">
-                💡 Prueba con <strong>DEMO123</strong> para ver el flujo completo de confirmación.
+                💡 Prueba con <strong>DEMO123</strong> para ver el flujo completo.
               </p>
               <form id="privacy-gate-form" class="privacy-gate-form">
                 <input
@@ -171,20 +171,20 @@ const { title, skipPrivacyGate = false } = Astro.props;
   }
 
   :root {
-    --bg: #f8f3eb;
-    --surface: #fcf8f1;
-    --surface-soft: #f4ede2;
-    --text: #3f332d;
-    --muted: #77665c;
-    --line: #dfd2c1;
-    --primary: #6f8765;
-    --primary-soft: #edf3ea;
-    --success: #5a8d71;
-    --danger: #b35b5b;
+    --bg: #111214;
+    --surface: #1A1A1C;
+    --surface-soft: #222226;
+    --text: #E8E0D0;
+    --muted: #999B9B;
+    --line: #2E2E32;
+    --primary: #D4AF37;
+    --primary-soft: #1F1A0A;
+    --success: #8A9597;
+    --danger: #C0504D;
     --radius-lg: 18px;
     --radius-md: 12px;
-    --shadow-sm: 0 10px 24px rgba(95, 72, 54, 0.08);
-    --shadow-md: 0 22px 40px rgba(95, 72, 54, 0.12);
+    --shadow-sm: 0 10px 24px rgba(0, 0, 0, 0.35);
+    --shadow-md: 0 22px 40px rgba(0, 0, 0, 0.50);
     --font-body: "Cormorant Garamond", Georgia, serif;
     --font-script: "Great Vibes", cursive;
   }
@@ -231,8 +231,8 @@ const { title, skipPrivacyGate = false } = Astro.props;
   }
 
   .demo-hint {
-    background: #edf3ea;
-    border: 1px solid #c6d8bf;
+    background: #1A1A0A;
+    border: 1px solid #2E2A10;
     border-radius: 8px;
     padding: 0.6rem 0.9rem;
     font-size: 1.05rem;
@@ -269,7 +269,7 @@ const { title, skipPrivacyGate = false } = Astro.props;
   }
 
   .privacy-gate-host-link:hover {
-    background: #f3ebdf;
+    background: #1F1A0A;
     transform: translateY(-1px);
   }
 
@@ -334,12 +334,12 @@ const { title, skipPrivacyGate = false } = Astro.props;
   }
 
   button:hover {
-    background: #f3ebdf;
+    background: #1F1A0A;
     transform: translateY(-1px);
   }
 
   button:disabled {
-    background: #eceae6;
+    background: #222226;
     cursor: not-allowed;
   }
 
@@ -359,8 +359,8 @@ const { title, skipPrivacyGate = false } = Astro.props;
   input:focus,
   textarea:focus {
     outline: none;
-    border-color: #a8baa0;
-    box-shadow: 0 0 0 3px rgba(111, 135, 101, 0.16);
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.18);
   }
 
   @media (max-width: 768px) {
@@ -383,5 +383,9 @@ const { title, skipPrivacyGate = false } = Astro.props;
     p {
       font-size: 1.12rem;
     }
+  }
+
+  .section-heading-icon, .detail-icon, .gift-heading-icon, .song-heading-icon, .qr-heading-icon {
+    filter: brightness(0) invert(0.85);
   }
 </style>

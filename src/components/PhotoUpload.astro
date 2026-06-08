@@ -14,9 +14,8 @@
   </p>
 
   <div class="upload-form">
-    <p class="upload-demo-banner">
-      🎭 <strong>Modo demo</strong> — la subida de fotos está simulada. Selecciona
-      imágenes para ver el flujo visual.
+    <p class="upload-info-banner">
+      📸 Selecciona tus fotos del evento y compártelas con nosotros.
     </p>
 
     <input
@@ -31,7 +30,7 @@
     <div id="preview-container" class="preview-container"></div>
 
     <button id="upload-btn" class="btn-upload" style="display: none;">
-      Subir Fotos (Demo)
+      Subir Fotos
     </button>
 
     <div id="upload-message" class="message"></div>
@@ -80,39 +79,41 @@
     margin-top: 1.5rem;
   }
 
-  .upload-demo-banner {
-    background: #fff8ec;
-    border: 1px solid #e5c97a;
+  .upload-info-banner {
+    background: var(--surface-soft);
+    border: 1px solid var(--line);
     border-radius: 8px;
     padding: 0.65rem 0.9rem;
     font-size: 1.05rem;
-    color: #7a5a1e;
+    color: var(--muted);
     text-align: left;
     margin-bottom: 1rem;
   }
 
   .btn-select {
     background: var(--primary);
-    border-color: #5f7556;
-    color: #fff;
+    border-color: var(--primary);
+    color: #0D0D0D;
     width: 100%;
     margin-bottom: 1rem;
   }
 
   .btn-select:hover {
-    background: #5f7556;
+    background: var(--primary-soft);
+    color: var(--primary);
   }
 
   .btn-upload {
     background: var(--primary);
-    border-color: #5f7556;
-    color: #fff;
+    border-color: var(--primary);
+    color: #0D0D0D;
     width: 100%;
     margin-top: 1rem;
   }
 
   .btn-upload:hover {
-    background: #5f7556;
+    background: var(--primary-soft);
+    color: var(--primary);
   }
 
   .preview-container {
@@ -165,64 +166,71 @@
 </style>
 
 <script>
-  const photoInput = document.getElementById(
-    "photo-input",
-  ) as HTMLInputElement | null;
-  const selectBtn = document.getElementById(
-    "select-photos-btn",
-  ) as HTMLButtonElement | null;
-  const uploadBtn = document.getElementById(
-    "upload-btn",
-  ) as HTMLButtonElement | null;
-  const previewContainer = document.getElementById(
-    "preview-container",
-  ) as HTMLElement | null;
-  const messageEl = document.getElementById(
-    "upload-message",
-  ) as HTMLElement | null;
+  import { uploadPhoto } from '../lib/photoUpload';
 
-  selectBtn?.addEventListener("click", () => photoInput?.click());
+  const photoInput = document.getElementById('photo-input') as HTMLInputElement | null;
+  const selectBtn = document.getElementById('select-photos-btn') as HTMLButtonElement | null;
+  const uploadBtn = document.getElementById('upload-btn') as HTMLButtonElement | null;
+  const previewContainer = document.getElementById('preview-container') as HTMLElement | null;
+  const messageEl = document.getElementById('upload-message') as HTMLElement | null;
 
-  photoInput?.addEventListener("change", () => {
+  selectBtn?.addEventListener('click', () => photoInput?.click());
+
+  photoInput?.addEventListener('change', () => {
     const files = photoInput.files;
     if (!files || files.length === 0) return;
-    if (previewContainer) previewContainer.innerHTML = "";
+    if (previewContainer) previewContainer.innerHTML = '';
     Array.from(files).forEach((file) => {
       const reader = new FileReader();
       reader.onload = (e) => {
-        const img = document.createElement("img");
+        const img = document.createElement('img');
         img.src = e.target?.result as string;
         img.alt = file.name;
         previewContainer?.appendChild(img);
       };
       reader.readAsDataURL(file);
     });
-    if (uploadBtn) uploadBtn.style.display = "block";
-    if (messageEl) messageEl.className = "message";
+    if (uploadBtn) uploadBtn.style.display = 'block';
+    if (messageEl) messageEl.className = 'message';
   });
 
-  uploadBtn?.addEventListener("click", async () => {
+  uploadBtn?.addEventListener('click', async () => {
+    const files = photoInput?.files;
+    if (!files || files.length === 0) return;
+
     if (uploadBtn) {
       uploadBtn.disabled = true;
-      uploadBtn.textContent = "Subiendo...";
+      uploadBtn.textContent = 'Subiendo...';
     }
 
-    // DEMO: simulate upload delay
-    await new Promise((resolve) => setTimeout(resolve, 1200));
+    let successCount = 0;
+    let errorCount = 0;
 
-    const count = photoInput?.files?.length ?? 0;
+    for (const file of Array.from(files)) {
+      const result = await uploadPhoto(file);
+      if (result.success) {
+        successCount++;
+      } else {
+        errorCount++;
+      }
+    }
 
     if (uploadBtn) {
       uploadBtn.disabled = false;
-      uploadBtn.style.display = "none";
-      uploadBtn.textContent = "Subir Fotos (Demo)";
+      uploadBtn.style.display = 'none';
+      uploadBtn.textContent = 'Subir Fotos';
     }
 
-    if (previewContainer) previewContainer.innerHTML = "";
+    if (previewContainer) previewContainer.innerHTML = '';
 
     if (messageEl) {
-      messageEl.textContent = `✅ ${count} ${count === 1 ? "foto subida" : "fotos subidas"} exitosamente. (Demo — no se guardaron)`;
-      messageEl.className = "message success";
+      if (errorCount === 0) {
+        messageEl.textContent = `✅ ${successCount} ${successCount === 1 ? 'foto subida' : 'fotos subidas'} exitosamente.`;
+        messageEl.className = 'message success';
+      } else {
+        messageEl.textContent = `⚠️ ${successCount} subidas correctamente, ${errorCount} con error. Intenta de nuevo con las que fallaron.`;
+        messageEl.className = 'message error';
+      }
     }
   });
 </script>

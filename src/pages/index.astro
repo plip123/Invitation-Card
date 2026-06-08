@@ -8,11 +8,11 @@ import QRCode from "../components/QRCode.astro";
 import RSVP from "../components/RSVP.astro";
 
 // ── Demo data — no personal info ──────────────────────────────────────────────
-const eventTitle = "Boda Civil";
-const eventDateLabel = "Sábado 12 de Septiembre — 05:00 PM a 11:00 PM";
-const eventVenue = "Salón Jardín Las Magnolias";
-const eventAddress = "Urbanización Los Pinos, Calle Principal";
-const eventMapUrl = "https://maps.google.com";
+const eventTitle = "Mis XV Años";
+const eventDateLabel = "Sábado 15 de Agosto — 7:00 PM";
+const eventVenue = "Club Táchira Tennis";
+const eventAddress = "Calle Caurimare, Colinas de Bello Monte, Caracas";
+const eventMapUrl = "https://maps.google.com/?q=Club+Tachira+Tennis,+Caracas";
 
 const formatGcal = (d: Date) =>
   d
@@ -20,8 +20,8 @@ const formatGcal = (d: Date) =>
     .replace(/[-:]/g, "")
     .replace(/\.\d{3}Z$/, "Z");
 
-const s = new Date("2026-09-12T17:00:00-04:00");
-const e = new Date("2026-09-12T23:00:00-04:00");
+const s = new Date("2026-08-15T19:00:00-04:00");
+const e = new Date("2026-08-15T23:00:00-04:00");
 const calDates = formatGcal(s) + "/" + formatGcal(e);
 const calDetails = eventDateLabel + ". Lugar: " + eventVenue + ".";
 const calLocation = eventVenue + ", " + eventAddress;
@@ -35,17 +35,11 @@ const calParams = new URLSearchParams({
 const calendarEventUrl =
   "https://calendar.google.com/calendar/render?" + calParams.toString();
 
-// Hero & gallery photos
-const heroBackgroundPhoto = "/fotos/portada.jpg";
-const galleryPhotos = [1, 2, 3, 4].map((n) => ({
-  src: `/fotos/${n}.jpg`,
-  alt: `Foto ${n}`,
-}));
-// Duplicar una vez en HTML para el loop CSS infinito (4 archivos únicos, 8 nodos)
-const marqueePhotos = [...galleryPhotos, ...galleryPhotos];
+// Hero photo
+const heroBackgroundPhoto = "/fotos/Bolas P.png";
 ---
 
-<BaseLayout title="Invitación de Boda — Demo">
+<BaseLayout title="Mis XV Años — Antonella Di Maggio">
   <main>
     <!-- Welcome gate (music) -->
     <section id="welcome-gate" class="welcome-gate" aria-modal="true">
@@ -88,22 +82,22 @@ const marqueePhotos = [...galleryPhotos, ...galleryPhotos];
           src="/hojas_portada_izquierda_superior.svg"
           alt=""
           class="hero-ornament hero-ornament-top"
+          style="filter: brightness(0) invert(1) sepia(1) saturate(2) hue-rotate(5deg)"
         />
         <img
           src="/hojas_portada_derecha_inferior.svg"
           alt=""
           class="hero-ornament hero-ornament-bottom"
+          style="filter: brightness(0) invert(1) sepia(1) saturate(2) hue-rotate(5deg)"
         />
         <div class="hero-overlay">
           <div class="hero-date-row">
             <span class="hero-line" aria-hidden="true"></span>
-            <p class="hero-date">12.09.2026</p>
+            <p class="hero-date">15.08.2026</p>
             <span class="hero-line" aria-hidden="true"></span>
           </div>
-          <h1 class="hero-names" aria-label="Sofía y Mateo">
-            <span class="hero-name">Sofía</span>
-            <span class="hero-amp">&</span>
-            <span class="hero-name">Mateo</span>
+          <h1 class="hero-names" aria-label="Antonella Di Maggio">
+            <span class="hero-name">Antonella</span>
           </h1>
           <span class="hero-names-line" aria-hidden="true"></span>
           <div class="hero-quote-wrap">
@@ -113,7 +107,7 @@ const marqueePhotos = [...galleryPhotos, ...galleryPhotos];
               class="hero-quote-mark hero-quote-open"
             />
             <p class="hero-quote">
-              El amor no se ve con los ojos, sino con el corazón.
+              Mis XV años
             </p>
             <img
               src="/comilla_cierre.svg"
@@ -202,40 +196,10 @@ const marqueePhotos = [...galleryPhotos, ...galleryPhotos];
         <div class="section-card"><RSVP /></div>
       </section>
 
-      <div class="section-divider" aria-hidden="true">
-        <img src="/ondas04.svg" alt="" />
-      </div>
-
-      <!-- Gallery -->
-      <section id="galeria" class="reveal">
-        <div class="section-card">
-          <h2>Retratos de Nuestro Amor</h2>
-          <div class="gallery-quote-wrap">
-            <span
-              class="gallery-quote-mark gallery-quote-open"
-              aria-hidden="true"></span>
-            <p class="gallery-quote">
-              Me has hechizado en cuerpo y alma, y te amo, te amo, te amo.
-            </p>
-            <span
-              class="gallery-quote-mark gallery-quote-close"
-              aria-hidden="true"></span>
-          </div>
-          <div class="gallery-carousel" role="list" aria-label="Galería demo">
-            <div class="gallery-track">
-              {
-                marqueePhotos.map((photo, index) => (
-                  <figure class="gallery-photo" role="listitem">
-                    <img src={photo.src} alt={photo.alt} loading="eager" />
-                  </figure>
-                ))
-              }
-            </div>
-          </div>
-        </div>
-      </section>
-
       <section id="event-details" class="reveal"><EventDetails /></section>
+
+      <div class="bolas-band" aria-hidden="true"></div>
+
       <section id="songs" class="reveal"><SongRequest /></section>
 
       <section id="photos" class="reveal">
@@ -253,25 +217,32 @@ const marqueePhotos = [...galleryPhotos, ...galleryPhotos];
       </div>
 
       <!-- Final -->
-      <section id="final" class="reveal">
-        <div class="section-card final-actions">
+      <section id="final" class="reveal bolas-final-section">
+        <div class="section-card final-actions bolas-final-card">
           <div class="final-icons" aria-hidden="true">
             <img
               class="final-cinta final-cinta-left"
               src="/cinta_izquierda.svg"
               alt=""
+              style="filter: brightness(0) saturate(100%) invert(72%) sepia(57%) saturate(400%) hue-rotate(5deg) brightness(95%)"
             />
-            <img class="final-heart" src="/corazon.svg" alt="" />
+            <img
+              class="final-heart"
+              src="/corazon.svg"
+              alt=""
+              style="filter: brightness(0) saturate(100%) invert(72%) sepia(57%) saturate(400%) hue-rotate(5deg) brightness(95%)"
+            />
             <img
               class="final-cinta final-cinta-right"
               src="/cinta_derecha.svg"
               alt=""
+              style="filter: brightness(0) saturate(100%) invert(72%) sepia(57%) saturate(400%) hue-rotate(5deg) brightness(95%)"
             />
           </div>
-          <h2>Sofía &amp; Mateo</h2>
+          <h2>Antonella Di Maggio</h2>
           <p>
-            Gracias por acompañarnos en este capítulo tan importante de nuestra
-            historia.
+            Gracias por ser parte de este momento tan especial en mi vida.
+            ¡Te espero con todo el cariño del mundo!
           </p>
         </div>
       </section>
@@ -302,7 +273,7 @@ const marqueePhotos = [...galleryPhotos, ...galleryPhotos];
     padding: 1.35rem 0 2.8rem;
     display: grid;
     gap: 1.1rem;
-    box-shadow: 0 -14px 30px rgba(56, 40, 28, 0.12);
+    box-shadow: 0 -14px 30px rgba(0, 0, 0, 0.40);
   }
 
   .app-shell > section,
@@ -370,7 +341,7 @@ const marqueePhotos = [...galleryPhotos, ...galleryPhotos];
     height: 100svh;
     border-radius: 0;
     background:
-      linear-gradient(180deg, rgba(66, 49, 39, 0.22), rgba(66, 49, 39, 0.62)),
+      linear-gradient(180deg, rgba(0, 0, 0, 0.25), rgba(0, 0, 0, 0.65)),
       var(--hero-bg-image, linear-gradient(135deg, #8f9b7a, #7f5d49));
     background-position: center;
     background-size: cover;
@@ -442,7 +413,7 @@ const marqueePhotos = [...galleryPhotos, ...galleryPhotos];
     font-size: 0.95rem;
     text-transform: uppercase;
     opacity: 0.94;
-    color: #f2f5f7;
+    color: var(--primary);
     margin: 0;
   }
 
@@ -459,28 +430,18 @@ const marqueePhotos = [...galleryPhotos, ...galleryPhotos];
 
   .hero-name {
     display: block;
-    font-size: clamp(2.95rem, 10.8vw, 4.5rem);
+    font-size: clamp(4.5rem, 12vw, 9rem);
     font-weight: 400;
     font-family: var(--font-script);
     line-height: 0.95;
   }
 
   .hero-amp {
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    border: 2px solid rgba(214, 228, 215, 0.95);
-    background: rgba(232, 239, 227, 0.88);
-    color: #597050;
-    display: grid;
-    place-items: center;
-    font-size: 1.8rem;
-    font-weight: 700;
-    text-shadow: none;
+    display: none;
   }
 
   .hero-names-line {
-    width: min(300px, 76vw);
+    width: min(320px, 60%);
     height: 1px;
     background: rgba(242, 245, 247, 0.72);
     margin: 0 auto 0.95rem;
@@ -641,10 +602,10 @@ const marqueePhotos = [...galleryPhotos, ...galleryPhotos];
     max-width: 100%;
     padding: 0.74rem 1.35rem;
     border-radius: 999px;
-    background: #f7efe4;
+    background: var(--surface-soft);
     border: 1px solid var(--line);
     text-decoration: none;
-    color: #5a4b42;
+    color: var(--text);
     font-weight: 600;
     transition: all 0.2s ease;
     font-size: 1.15rem;
@@ -652,8 +613,8 @@ const marqueePhotos = [...galleryPhotos, ...galleryPhotos];
 
   .pill-btn:hover {
     transform: translateY(-2px);
-    background: #efe2d2;
-    border-color: #d6c0a6;
+    background: var(--primary-soft);
+    border-color: var(--primary);
   }
 
   .section-banner {
@@ -806,95 +767,22 @@ const marqueePhotos = [...galleryPhotos, ...galleryPhotos];
     border-color: var(--danger);
   }
 
-  /* ── Gallery ───────────────────────────────────────────── */
-  .gallery-carousel {
-    margin-top: 0.95rem;
-    overflow: hidden;
-    border: 1px solid #e7d9c8;
-    background: #f7eee3;
-    padding: 0.75rem;
-    max-width: 100%;
-  }
-
-  .gallery-quote-wrap {
-    display: grid;
-    justify-items: center;
-    gap: 0.18rem;
-    margin-top: 0.15rem;
-  }
-  .gallery-quote {
-    margin: 0;
-    text-align: center;
-  }
-
-  .gallery-quote-mark {
-    width: 16px;
-    height: 16px;
-    opacity: 0.95;
-    display: block;
-    background: var(--primary);
-    -webkit-mask-position: center;
-    -webkit-mask-repeat: no-repeat;
-    -webkit-mask-size: contain;
-    mask-position: center;
-    mask-repeat: no-repeat;
-    mask-size: contain;
-    will-change: transform;
-  }
-  .gallery-quote-open {
-    -webkit-mask-image: url("/comilla_apertura.svg");
-    mask-image: url("/comilla_apertura.svg");
-    animation: quote-mark-drift 3.6s ease-in-out infinite;
-  }
-  .gallery-quote-close {
-    -webkit-mask-image: url("/comilla_cierre.svg");
-    mask-image: url("/comilla_cierre.svg");
-    animation: quote-mark-drift 3.6s ease-in-out infinite reverse;
-  }
-
-  .gallery-track {
-    display: flex;
-    width: max-content;
-    gap: 0.85rem;
-    animation: gallery-scroll 28s linear infinite;
-  }
-  .gallery-track:hover {
-    animation-play-state: paused;
-  }
-  @keyframes gallery-scroll {
-    from {
-      transform: translateX(0);
-    }
-    to {
-      transform: translateX(-50%);
-    }
-  }
-
-  .gallery-photo {
-    width: min(320px, 58vw);
-    max-width: 90vw;
-    min-height: 370px;
-    border-radius: 0;
-    background: #f3e7d9;
-    border: 1px solid #e7d9c8;
-    overflow: hidden;
-    box-shadow: var(--shadow-sm);
-    flex: 0 0 auto;
-  }
-
-  .gallery-photo img {
+  /* ── Bolas decorativas ─────────────────────────────────── */
+  .bolas-band {
     width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
+    min-height: clamp(200px, 28vw, 360px);
+    background: url('/fotos/Bolas NDP.png') center / cover no-repeat;
   }
 
-  .gallery-demo-note {
-    text-align: center;
-    font-size: 0.95rem;
-    color: var(--muted);
-    margin-top: 0.65rem;
-    margin-bottom: 0;
+  .bolas-final-section {
+    background: url('/fotos/Bolas D.png') center / cover no-repeat;
+  }
+
+  .bolas-final-card {
+    background: rgba(13, 13, 13, 0.80) !important;
+    border-color: rgba(212, 175, 55, 0.40) !important;
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
   }
 
   /* ── Music FAB ─────────────────────────────────────────── */
@@ -1001,7 +889,6 @@ const marqueePhotos = [...galleryPhotos, ...galleryPhotos];
 
   #countdown,
   #evento,
-  #galeria,
   #event-details,
   #songs,
   #gifts,
@@ -1147,7 +1034,6 @@ const marqueePhotos = [...galleryPhotos, ...galleryPhotos];
     }
     #countdown,
     #evento,
-    #galeria,
     #event-details,
     #confirmacion,
     #songs,
@@ -1162,10 +1048,6 @@ const marqueePhotos = [...galleryPhotos, ...galleryPhotos];
     .event-block {
       padding: 1.1rem 1rem;
     }
-    .gallery-photo {
-      width: min(260px, 62vw);
-      min-height: 320px;
-    }
   }
 
   @media (min-width: 960px) {
@@ -1179,7 +1061,6 @@ const marqueePhotos = [...galleryPhotos, ...galleryPhotos];
     }
     #countdown,
     #evento,
-    #galeria,
     #event-details,
     #songs,
     #gifts,
@@ -1265,16 +1146,6 @@ const marqueePhotos = [...galleryPhotos, ...galleryPhotos];
       width: min(100%, 280px);
       margin-inline: auto;
     }
-    .gallery-carousel {
-      padding: 0.55rem;
-    }
-    .gallery-track {
-      gap: 0.55rem;
-    }
-    .gallery-photo {
-      width: min(220px, 70vw);
-      min-height: 250px;
-    }
     .section-divider img {
       height: 22px;
     }
@@ -1283,7 +1154,6 @@ const marqueePhotos = [...galleryPhotos, ...galleryPhotos];
     }
     #countdown,
     #evento,
-    #galeria,
     #event-details,
     #songs,
     #gifts,

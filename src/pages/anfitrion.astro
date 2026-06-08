@@ -10,17 +10,9 @@ const adminPassword = import.meta.env.ADMIN_PASSWORD || "admin123";
     <section
       id="admin-login"
       class="panel-card login-card"
-      data-admin-user={adminUsername}
-      data-admin-pass={adminPassword}
     >
       <h1>Acceso administrativo</h1>
       <p>Ingresa usuario y clave para administrar invitaciones y contenido.</p>
-      <p class="login-credentials">
-        <strong>Usuario:</strong>
-        {adminUsername}<br />
-        <strong>Clave:</strong>
-        {adminPassword}
-      </p>
 
       <form id="login-form" class="login-form">
         <input
@@ -426,20 +418,6 @@ const adminPassword = import.meta.env.ADMIN_PASSWORD || "admin123";
     margin-top: 0.9rem;
     display: grid;
     gap: 0.65rem;
-  }
-
-  .login-credentials {
-    margin: 0.4rem 0 0.2rem;
-    padding: 0.7rem 0.85rem;
-    background: var(--primary-soft);
-    border: 1px solid var(--line);
-    color: var(--text);
-    font-size: 1.05rem;
-    text-align: left;
-  }
-
-  .login-credentials strong {
-    color: var(--title);
   }
 
   .login-error {
@@ -993,7 +971,7 @@ const adminPassword = import.meta.env.ADMIN_PASSWORD || "admin123";
   }
 </style>
 
-<script>
+<script define:vars={{ adminUsername, adminPassword }}>
   import { db, storage } from "../lib/firebase";
   import {
     collection,
@@ -1034,8 +1012,8 @@ const adminPassword = import.meta.env.ADMIN_PASSWORD || "admin123";
   const SONG_PAGE_SIZE = 10;
 
   const loginSection = document.getElementById("admin-login") as HTMLElement;
-  const ADMIN_USERNAME = loginSection.dataset.adminUser || "admin";
-  const ADMIN_PASSWORD = loginSection.dataset.adminPass || "admin123";
+  const ADMIN_USERNAME = adminUsername;
+  const ADMIN_PASSWORD = adminPassword;
   const ADMIN_SESSION_KEY = "weddingAdminSession";
 
   const adminContent = document.getElementById("admin-content") as HTMLElement;

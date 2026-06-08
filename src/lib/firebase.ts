@@ -1,11 +1,13 @@
-/**
- * DEMO: Firebase stub — all exports are no-ops.
- * This replaces real Firebase so the demo builds without any credentials.
- */
+import { initializeApp, getApps } from 'firebase/app';
+import { getFirestore } from 'firebase/firestore';
+import { getStorage } from 'firebase/storage';
+import { firebaseConfig } from './firebase.config';
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const db: any = null;
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const storage: any = null;
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const app: any = null;
+// Prevent re-initialization in Astro's module hot-reload
+const app = getApps().length === 0
+  ? initializeApp(firebaseConfig)
+  : getApps()[0];
+
+export const db = getFirestore(app);
+export const storage = getStorage(app);
+export { app };

@@ -112,39 +112,47 @@
 </style>
 
 <script>
-  const form = document.getElementById("song-form") as HTMLFormElement | null;
-  const titleInput = document.getElementById(
-    "song-title",
-  ) as HTMLInputElement | null;
-  const submitBtn = document.getElementById(
-    "song-submit",
-  ) as HTMLButtonElement | null;
-  const messageEl = document.getElementById(
-    "song-message",
-  ) as HTMLElement | null;
+  import { addDoc, collection, serverTimestamp } from 'firebase/firestore';
+  import { db } from '../lib/firebase';
 
-  form?.addEventListener("submit", async (event) => {
+  const form = document.getElementById('song-form') as HTMLFormElement | null;
+  const titleInput = document.getElementById('song-title') as HTMLInputElement | null;
+  const artistInput = document.getElementById('song-artist') as HTMLInputElement | null;
+  const youtubeInput = document.getElementById('song-youtube') as HTMLInputElement | null;
+  const submitBtn = document.getElementById('song-submit') as HTMLButtonElement | null;
+  const messageEl = document.getElementById('song-message') as HTMLElement | null;
+
+  form?.addEventListener('submit', async (event) => {
     event.preventDefault();
     const title = titleInput?.value.trim();
     if (!title) return;
 
     if (submitBtn) {
       submitBtn.disabled = true;
-      submitBtn.textContent = "Enviando...";
+      submitBtn.textContent = 'Enviando...';
     }
 
-    // DEMO: simulate async call
-    await new Promise((resolve) => setTimeout(resolve, 600));
+    try {
+      await addDoc(collection(db, 'songs'), {
+        title,
+        artist: artistInput?.value.trim() || null,
+        youtube: youtubeInput?.value.trim() || null,
+        createdAt: serverTimestamp(),
+      });
 
-    if (submitBtn) {
-      submitBtn.disabled = false;
-      submitBtn.textContent = "Sugerir canción";
+      if (messageEl) {
+        messageEl.textContent = `¡"${title}" fue agregada a la lista! 🎵`;
+      }
+      form.reset();
+    } catch {
+      if (messageEl) {
+        messageEl.textContent = 'No se pudo enviar la sugerencia. Intenta de nuevo.';
+      }
+    } finally {
+      if (submitBtn) {
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Sugerir canción';
+      }
     }
-
-    if (messageEl) {
-      messageEl.textContent = `¡"${title}" fue agregada a la lista! 🎵 (Demo — no se guarda)`;
-    }
-
-    form.reset();
   });
 </script>

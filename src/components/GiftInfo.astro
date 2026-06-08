@@ -13,43 +13,19 @@
     <h2>Regalos</h2>
   </div>
   <p>
-    Tu presencia es nuestro regalo principal. Si deseas tener un detalle
-    adicional, puedes hacerlo por cualquiera de estas opciones.
+    Tu presencia es mi mayor regalo. Si deseas tener un detalle adicional,
+    con todo el cariño lo recibo.
   </p>
 
-  <div class="gift-grid">
-    <article class="gift-card">
-      <h3>Transferencia bancaria</h3>
-      <p>
-        <strong>Banco:</strong> Nombre del Banco<br />
-        <strong>Cuenta:</strong> ●●●● ●●●● ●●●● 0000
-      </p>
-      <div class="gift-actions">
-        <button type="button" class="demo-btn" disabled>Copiar cuenta</button>
-      </div>
-      <p class="gift-note demo-note">⚠️ Demo — dato de ejemplo</p>
-    </article>
-
-    <article class="gift-card">
-      <h3>Billetera digital</h3>
-      <p>
-        <strong>Plataforma:</strong> Nombre App<br />
-        <strong>Usuario:</strong> @usuario.demo
-      </p>
-      <div class="gift-actions">
-        <button type="button" class="demo-btn" disabled>Copiar usuario</button>
-      </div>
-      <p class="gift-note demo-note">⚠️ Demo — dato de ejemplo</p>
-    </article>
-
-    <article class="gift-card">
+  <div class="gift-grid gift-grid--single">
+    <article class="gift-card gift-card--center">
       <h3>Lluvia de sobres</h3>
       <p>
-        También recibiremos sobres el día del evento. No es obligatorio: con tu
-        compañía ya estamos felices.
+        Tu presencia es el mejor regalo. Si deseas tener un detalle
+        adicional, recibiremos sobres con mucho cariño el día del evento.
       </p>
       <p class="gift-note">
-        Gracias por acompañarnos en este momento tan especial.
+        ¡Gracias por acompañarme en este día tan especial! 🎀
       </p>
     </article>
   </div>
@@ -126,21 +102,20 @@
     margin-top: 0.35rem;
   }
 
-  .demo-btn {
-    opacity: 0.55;
-    cursor: not-allowed;
-    font-size: 1rem;
-  }
-
   .gift-note {
     font-size: 0.95rem;
     color: var(--muted);
     margin: 0;
   }
 
-  .demo-note {
-    color: #9b6b3a;
-    font-size: 0.9rem;
+  .gift-grid--single {
+    grid-template-columns: 1fr;
+    max-width: 480px;
+    margin-inline: auto;
+  }
+
+  .gift-card--center {
+    text-align: center;
   }
 
   @keyframes gift-bob {
