@@ -29,5 +29,3 @@ build/
 # Temp files
 *.tmp
 .cache/
-
-firebase.config.ts
