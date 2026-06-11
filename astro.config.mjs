@@ -4,7 +4,7 @@ import mkcert from 'vite-plugin-mkcert';
 // https://astro.build/config
 export default defineConfig({
   output: 'static',
-  site: 'https://card-invitation-e25d8.web.app',
+  site: 'https://antonelladimaggio.xyz',
   server: {
     host: true,
   },
