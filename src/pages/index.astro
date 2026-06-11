@@ -618,6 +618,13 @@ const heroBackgroundPhoto = "/fotos/Bolas P.png";
     border-color: var(--primary);
   }
 
+  .pill-btn:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+    pointer-events: none;
+    transform: none;
+  }
+
   .section-banner {
     width: fit-content;
     min-width: min(100%, 360px);
@@ -1317,23 +1324,27 @@ const heroBackgroundPhoto = "/fotos/Bolas P.png";
   function setActionStatus(status?: "pending" | "confirmed" | "declined") {
     if (!eventActionsButtons || !eventActionsStatus) return;
     eventActionsStatus.classList.remove("is-confirmed", "is-declined");
+    // Los botones quedan siempre visibles para que el invitado pueda
+    // cambiar su respuesta; se deshabilita solo el de la opción ya elegida.
+    eventActionsButtons.hidden = false;
+    if (eventConfirmBtn) eventConfirmBtn.disabled = status === "confirmed";
+    if (eventDeclineBtn) eventDeclineBtn.disabled = status === "declined";
     if (status === "confirmed") {
-      eventActionsButtons.hidden = true;
       eventActionsStatus.hidden = false;
       eventActionsStatus.classList.add("is-confirmed");
-      eventActionsStatus.textContent = "Invitación Confirmada";
+      eventActionsStatus.textContent =
+        "¡Qué alegría! Tu asistencia está confirmada. Te esperamos para celebrar juntos este día tan especial. 💛 Si tus planes cambian, puedes indicar que no podrás asistir.";
       hideConfirmationSection();
       return;
     }
     if (status === "declined") {
-      eventActionsButtons.hidden = true;
       eventActionsStatus.hidden = false;
       eventActionsStatus.classList.add("is-declined");
-      eventActionsStatus.textContent = "Has confirmado que no podrás asistir.";
+      eventActionsStatus.textContent =
+        "Sentimos mucho no poder contar con tu presencia. Gracias por avisarnos con cariño. 🤍 Si tu disponibilidad cambia, puedes confirmar.";
       hideConfirmationSection();
       return;
     }
-    eventActionsButtons.hidden = false;
     eventActionsStatus.hidden = true;
     eventActionsStatus.textContent = "";
   }
@@ -1429,14 +1440,14 @@ const heroBackgroundPhoto = "/fotos/Bolas P.png";
 
     setPaused();
 
-    // La música debe comenzar desde el segundo 5 la primera vez que suena.
+    // La música debe comenzar desde el segundo 7 la primera vez que suena.
     let introStartDone = false;
     const startFromIntro = () => {
       if (introStartDone) return;
       introStartDone = true;
       const seek = () => {
         try {
-          backgroundAudio.currentTime = 5;
+          backgroundAudio.currentTime = 7;
         } catch {}
       };
       if (backgroundAudio.readyState >= 1) seek();

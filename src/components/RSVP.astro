@@ -235,7 +235,6 @@
 
   let currentToken = "";
   let currentMaxGuests = 0;
-  let pendingAction: "confirm" | "decline" | null = null;
 
   function showMessage(text: string, type: "success" | "error") {
     if (!messageEl) return;
@@ -272,42 +271,42 @@
     tokenInput.value = tokenFromUrl;
   }
 
-  window.addEventListener("rsvp-preselect", (event) => {
-    const detail = (event as CustomEvent<{ action: string }>).detail;
-    if (detail?.action === "confirm") confirmBtn?.click();
-    if (detail?.action === "decline") declineBtn?.click();
-  });
-
-  validateBtn?.addEventListener("click", async () => {
-    const token = tokenInput?.value.trim() ?? "";
+  // Valida el token contra Firestore y carga los datos del invitado.
+  // Devuelve true si el código es válido.
+  async function validateToken(token: string): Promise<boolean> {
     if (!token) {
       showMessage("Ingresa tu código de invitación.", "error");
-      return;
+      return false;
     }
 
-    validateBtn.disabled = true;
-    validateBtn.textContent = "Validando...";
+    if (validateBtn) {
+      validateBtn.disabled = true;
+      validateBtn.textContent = "Validando...";
+    }
 
     const guest = await validateRSVPToken(token);
 
-    validateBtn.disabled = false;
-    validateBtn.textContent = "Validar Código";
+    if (validateBtn) {
+      validateBtn.disabled = false;
+      validateBtn.textContent = "Validar Código";
+    }
 
     if (!guest) {
       showMessage("Código no encontrado. Verifica tu invitación.", "error");
-      return;
+      return false;
     }
 
     currentToken = token;
-    currentMaxGuests = guest.maxGuests;
+    currentMaxGuests = Math.max(1, Number(guest.maxGuests) || 1);
 
     if (guestNameEl) guestNameEl.textContent = guest.name ?? "Invitado";
-    if (maxGuestsEl) maxGuestsEl.textContent = String(guest.maxGuests);
+    if (maxGuestsEl) maxGuestsEl.textContent = String(currentMaxGuests);
     if (confirmedGuestsInput) {
-      confirmedGuestsInput.max = String(guest.maxGuests);
-      confirmedGuestsInput.value = String(guest.maxGuests);
+      confirmedGuestsInput.max = String(currentMaxGuests);
+      confirmedGuestsInput.value = String(currentMaxGuests);
     }
 
+    if (actionHint) actionHint.style.display = "none";
     if (guest.status === "confirmed" && actionHint) {
       actionHint.textContent =
         "Ya confirmaste tu asistencia. Puedes modificar si lo necesitas.";
@@ -330,10 +329,41 @@
         detail: { status: guest.status },
       }),
     );
+    return true;
+  }
+
+  window.addEventListener("rsvp-preselect", async (event) => {
+    const detail = (event as CustomEvent<{ action: string }>).detail;
+    if (!detail) return;
+    // Asegura que el invitado esté validado antes de disparar la acción.
+    if (!currentToken) {
+      const ok = await validateToken(tokenInput?.value.trim() ?? "");
+      if (!ok) return;
+    }
+    if (detail.action === "confirm") confirmBtn?.click();
+    if (detail.action === "decline") declineBtn?.click();
   });
 
+  validateBtn?.addEventListener("click", () => {
+    void validateToken(tokenInput?.value.trim() ?? "");
+  });
+
+  // Auto-validar el token que llega por la URL para que el flujo de
+  // Confirmar / No podré asistir ya tenga los datos del invitado cargados.
+  if (tokenFromUrl) {
+    void validateToken(tokenFromUrl);
+  }
+
   confirmBtn?.addEventListener("click", () => {
-    const count = parseInt(confirmedGuestsInput?.value ?? "0", 10);
+    if (!currentToken) {
+      showMessage("Primero valida tu código de invitación.", "error");
+      return;
+    }
+    const count = parseInt(confirmedGuestsInput?.value ?? "", 10);
+    if (Number.isNaN(count) || count < 0) {
+      showMessage("Indica cuántos invitados confirman su asistencia.", "error");
+      return;
+    }
     if (count > currentMaxGuests) {
       showMessage(`El máximo de invitados es ${currentMaxGuests}.`, "error");
       return;
@@ -358,6 +388,10 @@
   });
 
   declineBtn?.addEventListener("click", () => {
+    if (!currentToken) {
+      showMessage("Primero valida tu código de invitación.", "error");
+      return;
+    }
     openModal(
       "No podré asistir",
       "¿Confirmar que no podrás asistir?",
