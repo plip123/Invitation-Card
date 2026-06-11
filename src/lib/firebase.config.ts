@@ -22,6 +22,7 @@ function getRequiredEnvVar(name: string): string {
       `Missing Firebase environment variable: ${name}. Configure it in your .env file.`,
     );
   }
+  console.log(`Using Firebase config ${name}=${value ? "****" : "MISSING"}`);
   return value;
 }
 
