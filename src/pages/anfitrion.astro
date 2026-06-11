@@ -107,7 +107,7 @@ const adminPassword = import.meta.env.PUBLIC_ADMIN_PASSWORD || "admin123";
 
             <div class="field-row">
               <label class="field-control">
-                <span class="field-label">Cantidad de invitados</span>
+                <span class="field-label">Cupo total (con acompañantes)</span>
                 <div class="number-input-wrap">
                   <input
                     id="invitation-max-guests"
@@ -115,8 +115,8 @@ const adminPassword = import.meta.env.PUBLIC_ADMIN_PASSWORD || "admin123";
                     min="1"
                     max="20"
                     value="2"
-                    placeholder="Cantidad de invitados"
-                    title="Cantidad total de invitados en esta invitación"
+                    placeholder="Cupo total de la invitación"
+                    title="Cantidad total de cupos de la invitación, incluyendo acompañantes"
                     required
                   />
                   <div class="number-stepper">
@@ -220,7 +220,11 @@ const adminPassword = import.meta.env.PUBLIC_ADMIN_PASSWORD || "admin123";
 
             <div class="invitees-wrap">
               <h4>Invitados de la invitación</h4>
-              <p>Completa nombre y apellido de cada invitado.</p>
+              <p>
+                Completa nombre y apellido de cada invitado con nombre. Los
+                acompañantes no llevan nombre y no aparecen en esta lista.
+              </p>
+              <p id="invitees-summary" class="invitees-summary" aria-live="polite"></p>
               <div id="invitees-list" class="invitees-list"></div>
             </div>
 
@@ -531,6 +535,13 @@ const adminPassword = import.meta.env.PUBLIC_ADMIN_PASSWORD || "admin123";
   .invitees-wrap p {
     margin-bottom: 0.6rem;
     font-size: 1.1rem;
+  }
+
+  .invitees-summary {
+    margin-bottom: 0.6rem;
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: var(--primary);
   }
 
   .invitees-list {
@@ -1114,6 +1125,9 @@ const adminPassword = import.meta.env.PUBLIC_ADMIN_PASSWORD || "admin123";
     "invitation-confirmed-guests",
   ) as HTMLInputElement;
   const inviteesList = document.getElementById("invitees-list") as HTMLElement;
+  const inviteesSummary = document.getElementById(
+    "invitees-summary",
+  ) as HTMLParagraphElement;
 
   const photosCount = document.getElementById("photos-count") as HTMLElement;
   const photosGrid = document.getElementById("photos-grid") as HTMLElement;
@@ -1439,9 +1453,27 @@ const adminPassword = import.meta.env.PUBLIC_ADMIN_PASSWORD || "admin123";
     });
   }
 
+  function updateInviteesSummary() {
+    const maxGuests = Math.max(1, Number(invitationMaxGuestsInput.value) || 1);
+    const companions = Math.min(
+      maxGuests - 1,
+      Math.max(0, Number(invitationCompanionsInput.value) || 0),
+    );
+    const named = Math.max(1, maxGuests - companions);
+    const plural = (n: number, one: string, many: string) =>
+      n === 1 ? one : many;
+
+    inviteesSummary.textContent =
+      `Total: ${maxGuests} ${plural(maxGuests, "cupo", "cupos")} = ` +
+      `${named} con nombre + ${companions} ${plural(companions, "acompañante", "acompañantes")}.`;
+  }
+
   function applyStatusRules() {
     const maxGuests = Math.max(1, Number(invitationMaxGuestsInput.value) || 1);
     invitationMaxGuestsInput.value = String(maxGuests);
+
+    // Mantener el campo "Confirmados" acotado al cupo total de la invitación.
+    invitationConfirmedGuestsInput.max = String(maxGuests);
 
     const status = invitationStatusInput.value as GuestStatus;
     let confirmedGuests = Math.max(
@@ -1478,6 +1510,7 @@ const adminPassword = import.meta.env.PUBLIC_ADMIN_PASSWORD || "admin123";
     const namedGuests = Math.max(1, maxGuests - companions);
     renderInviteeInputs(namedGuests, seed);
     applyStatusRules();
+    updateInviteesSummary();
   }
 
   function resetInvitationForm() {
@@ -1491,7 +1524,9 @@ const adminPassword = import.meta.env.PUBLIC_ADMIN_PASSWORD || "admin123";
     invitationStatusInput.value = "pending";
     invitationConfirmedGuestsInput.value = "0";
     saveInvitationBtn.textContent = "Guardar";
+    invitationConfirmedGuestsInput.max = "2";
     renderInviteeInputs(2);
+    updateInviteesSummary();
   }
 
   function openInvitationForm(
@@ -1519,10 +1554,12 @@ const adminPassword = import.meta.env.PUBLIC_ADMIN_PASSWORD || "admin123";
     invitationStatusInput.value = guest.status;
     invitationConfirmedGuestsInput.value = String(guest.confirmedGuests);
     saveInvitationBtn.textContent = "Actualizar";
+    invitationConfirmedGuestsInput.max = String(guest.maxGuests);
     renderInviteeInputs(
       Math.max(1, guest.maxGuests - (guest.companions || 0)),
       guest.invitees,
     );
+    updateInviteesSummary();
   }
 
   function closeInvitationForm() {
@@ -2098,6 +2135,7 @@ const adminPassword = import.meta.env.PUBLIC_ADMIN_PASSWORD || "admin123";
   invitationCompanionsInput.addEventListener("input", syncGuestDistribution);
 
   invitationStatusInput.addEventListener("change", applyStatusRules);
+  invitationConfirmedGuestsInput.addEventListener("input", applyStatusRules);
 
   invitationForm.addEventListener("submit", saveInvitation);
 
