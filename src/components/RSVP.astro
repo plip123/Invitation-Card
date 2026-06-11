@@ -335,13 +335,15 @@
   window.addEventListener("rsvp-preselect", async (event) => {
     const detail = (event as CustomEvent<{ action: string }>).detail;
     if (!detail) return;
-    // Asegura que el invitado esté validado antes de disparar la acción.
+    // Solo asegura que el formulario esté validado y visible, y resalta la
+    // acción elegida. El modal NO se abre aquí: el invitado confirma o
+    // declina desde el propio formulario de asistencia.
     if (!currentToken) {
       const ok = await validateToken(tokenInput?.value.trim() ?? "");
       if (!ok) return;
     }
-    if (detail.action === "confirm") confirmBtn?.click();
-    if (detail.action === "decline") declineBtn?.click();
+    const targetBtn = detail.action === "decline" ? declineBtn : confirmBtn;
+    targetBtn?.focus({ preventScroll: true });
   });
 
   validateBtn?.addEventListener("click", () => {

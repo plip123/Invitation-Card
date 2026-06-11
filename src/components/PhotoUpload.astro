@@ -125,10 +125,11 @@
     max-width: 100%;
   }
 
-  .preview-container img {
-    width: clamp(80px, 28vw, 110px);
-    aspect-ratio: 1;
-    object-fit: cover;
+  /* El <img> del preview se crea por JS, así que la regla debe ser global
+     (los estilos scoped no aplican a elementos creados en runtime). */
+  .preview-container :global(img) {
+    max-width: clamp(80px, 28vw, 110px);
+    height: auto;
     border: 1px solid var(--line);
     border-radius: 4px;
     flex: 0 0 auto;

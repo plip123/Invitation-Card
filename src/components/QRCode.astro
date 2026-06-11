@@ -24,8 +24,13 @@ const qrImageUrl = `https://quickchart.io/qr?text=${encodeURIComponent(photoUplo
     <p class="qr-link">{photoUploadUrl}</p>
   </div>
 
+  <a href="/fotos" class="qr-upload-btn">
+    <img src="/camara.svg" alt="" class="qr-upload-btn-icon" aria-hidden="true" />
+    Subir fotos
+  </a>
+
   <p class="qr-note">
-    Escanea el código o abre el enlace para subir tus fotos del evento.
+    Escanea el código o pulsa el botón para subir tus fotos del evento.
   </p>
 </div>
 
@@ -94,6 +99,37 @@ const qrImageUrl = `https://quickchart.io/qr?text=${encodeURIComponent(photoUplo
     margin-top: 0.9rem;
     font-size: 1.05rem;
     color: var(--muted);
+  }
+
+  .qr-upload-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-top: 1.1rem;
+    padding: 0.8rem 1.6rem;
+    border-radius: 999px;
+    background: var(--primary);
+    border: 1px solid var(--primary);
+    color: #0d0d0d;
+    font-weight: 700;
+    font-size: 1.15rem;
+    text-decoration: none;
+    transition:
+      transform 0.2s ease,
+      background 0.2s ease;
+  }
+
+  .qr-upload-btn:hover {
+    transform: translateY(-2px);
+    background: var(--primary-soft);
+    color: var(--primary);
+  }
+
+  .qr-upload-btn-icon {
+    width: 20px;
+    height: 20px;
+    object-fit: contain;
   }
 
   @keyframes qr-camera-flash {
