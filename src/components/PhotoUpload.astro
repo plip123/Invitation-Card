@@ -13,7 +13,14 @@
     ¡Ayúdanos a capturar momentos especiales compartiendo tus fotos del evento!
   </p>
 
-  <div class="upload-form">
+  <p id="upload-loading" class="upload-loading">Cargando...</p>
+
+  <div id="upload-disabled" class="upload-disabled" hidden>
+    🔒 La subida de fotos no está habilitada en este momento. Vuelve a
+    intentarlo más tarde.
+  </div>
+
+  <div class="upload-form" id="upload-form" hidden>
     <p class="upload-info-banner">
       📸 Selecciona tus fotos del evento y compártelas con nosotros.
     </p>
@@ -77,6 +84,30 @@
 
   .upload-form {
     margin-top: 1.5rem;
+  }
+
+  .upload-form[hidden],
+  .upload-disabled[hidden],
+  .upload-loading[hidden] {
+    display: none;
+  }
+
+  .upload-loading {
+    margin-top: 1.2rem;
+    text-align: center;
+    color: var(--muted);
+  }
+
+  .upload-disabled {
+    margin-top: 1.4rem;
+    padding: 1rem 1.1rem;
+    border: 1px solid #e5c97a;
+    background: #fff8ec;
+    border-radius: 8px;
+    color: #7a5a1e;
+    text-align: center;
+    font-weight: 600;
+    line-height: 1.5;
   }
 
   .upload-info-banner {
@@ -171,12 +202,35 @@
 
 <script>
   import { uploadPhoto } from '../lib/photoUpload';
+  import { doc, getDoc } from 'firebase/firestore';
+  import { db } from '../lib/firebase';
 
   const photoInput = document.getElementById('photo-input') as HTMLInputElement | null;
   const selectBtn = document.getElementById('select-photos-btn') as HTMLButtonElement | null;
   const uploadBtn = document.getElementById('upload-btn') as HTMLButtonElement | null;
   const previewContainer = document.getElementById('preview-container') as HTMLElement | null;
   const messageEl = document.getElementById('upload-message') as HTMLElement | null;
+  const uploadForm = document.getElementById('upload-form') as HTMLElement | null;
+  const uploadDisabled = document.getElementById('upload-disabled') as HTMLElement | null;
+  const uploadLoading = document.getElementById('upload-loading') as HTMLElement | null;
+
+  let uploadsEnabled = false;
+
+  // El anfitrión controla la subida desde el panel (appSettings/photoUpload).
+  async function checkUploadsEnabled() {
+    try {
+      const snap = await getDoc(doc(db, 'appSettings', 'photoUpload'));
+      uploadsEnabled = snap.exists() && Boolean(snap.data()?.enabled);
+    } catch {
+      uploadsEnabled = false;
+    }
+
+    if (uploadLoading) uploadLoading.hidden = true;
+    if (uploadForm) uploadForm.hidden = !uploadsEnabled;
+    if (uploadDisabled) uploadDisabled.hidden = uploadsEnabled;
+  }
+
+  void checkUploadsEnabled();
 
   selectBtn?.addEventListener('click', () => photoInput?.click());
 
@@ -199,6 +253,13 @@
   });
 
   uploadBtn?.addEventListener('click', async () => {
+    if (!uploadsEnabled) {
+      if (messageEl) {
+        messageEl.textContent = 'La subida de fotos no está habilitada en este momento.';
+        messageEl.className = 'message error';
+      }
+      return;
+    }
     const files = photoInput?.files;
     if (!files || files.length === 0) return;
 
