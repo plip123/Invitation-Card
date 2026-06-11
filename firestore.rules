@@ -5,9 +5,11 @@ service cloud.firestore {
     match /guests/{token} {
       allow read, write: if true; // cambiar en producción final
     }
-    match /songs/{doc} {
+    match /songRequests/{doc} {
+      // Los invitados crean sugerencias; el panel (sin auth) las lee y borra.
       allow create: if true;
-      allow read: if false; // solo el admin lo lee
+      allow read: if true;
+      allow delete: if true;
     }
   }
 }

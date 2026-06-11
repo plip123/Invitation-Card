@@ -133,10 +133,15 @@
     }
 
     try {
-      await addDoc(collection(db, 'songs'), {
+      const params = new URLSearchParams(window.location.search);
+      const guestToken =
+        params.get('codigo')?.trim() || params.get('token')?.trim() || null;
+
+      await addDoc(collection(db, 'songRequests'), {
         title,
         artist: artistInput?.value.trim() || null,
-        youtube: youtubeInput?.value.trim() || null,
+        youtubeUrl: youtubeInput?.value.trim() || null,
+        guestToken,
         createdAt: serverTimestamp(),
       });
 

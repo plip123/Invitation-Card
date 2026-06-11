@@ -2032,7 +2032,7 @@ const adminPassword = import.meta.env.PUBLIC_ADMIN_PASSWORD || "admin123";
   }
 
   async function loadPhotos() {
-    const photosRef = ref(storage, "photos");
+    const photosRef = ref(storage, "fotos-evento");
     const listed = await listAll(photosRef);
     const entries = await Promise.all(
       listed.items.map(async (item: any) => {
