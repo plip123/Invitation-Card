@@ -10,6 +10,8 @@ const adminPassword = import.meta.env.PUBLIC_ADMIN_PASSWORD || "admin123";
     <section
       id="admin-login"
       class="panel-card login-card"
+      data-admin-user={adminUsername}
+      data-admin-pass={adminPassword}
     >
       <h1>Acceso administrativo</h1>
       <p>Ingresa usuario y clave para administrar invitaciones y contenido.</p>
@@ -971,7 +973,7 @@ const adminPassword = import.meta.env.PUBLIC_ADMIN_PASSWORD || "admin123";
   }
 </style>
 
-<script define:vars={{ adminUsername, adminPassword }}>
+<script>
   import { db, storage } from "../lib/firebase";
   import {
     collection,
@@ -1012,8 +1014,8 @@ const adminPassword = import.meta.env.PUBLIC_ADMIN_PASSWORD || "admin123";
   const SONG_PAGE_SIZE = 10;
 
   const loginSection = document.getElementById("admin-login") as HTMLElement;
-  const ADMIN_USERNAME = adminUsername;
-  const ADMIN_PASSWORD = adminPassword;
+  const ADMIN_USERNAME = loginSection.dataset.adminUser || "admin";
+  const ADMIN_PASSWORD = loginSection.dataset.adminPass || "admin123";
   const ADMIN_SESSION_KEY = "weddingAdminSession";
 
   const adminContent = document.getElementById("admin-content") as HTMLElement;

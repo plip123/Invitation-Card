@@ -27,10 +27,10 @@ function getRequiredEnvVar(name: string): string {
 }
 
 export const firebaseConfig = {
-  apiKey: getRequiredEnvVar("FIREBASE_API_KEY"),
-  authDomain: getRequiredEnvVar("FIREBASE_AUTH_DOMAIN"),
-  projectId: getRequiredEnvVar("FIREBASE_PROJECT_ID"),
-  storageBucket: getRequiredEnvVar("FIREBASE_STORAGE_BUCKET"),
-  messagingSenderId: getRequiredEnvVar("FIREBASE_MESSAGING_SENDER_ID"),
-  appId: getRequiredEnvVar("FIREBASE_APP_ID"),
+  apiKey: getRequiredEnvVar("PUBLIC_FIREBASE_API_KEY"),
+  authDomain: getRequiredEnvVar("PUBLIC_FIREBASE_AUTH_DOMAIN"),
+  projectId: getRequiredEnvVar("PUBLIC_FIREBASE_PROJECT_ID"),
+  storageBucket: getRequiredEnvVar("PUBLIC_FIREBASE_STORAGE_BUCKET"),
+  messagingSenderId: getRequiredEnvVar("PUBLIC_FIREBASE_MESSAGING_SENDER_ID"),
+  appId: getRequiredEnvVar("PUBLIC_FIREBASE_APP_ID"),
 };
