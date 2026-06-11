@@ -45,7 +45,7 @@ const { title, skipPrivacyGate = false } = Astro.props;
                 <button id="privacy-gate-submit" type="submit">Ingresar</button>
               </form>
               <p id="privacy-gate-error" class="privacy-gate-error" hidden>
-                Ingresa cualquier código para continuar.
+                El código no es válido. Revisa el enlace de tu invitación.
               </p>
             </section>
           </main>
@@ -94,25 +94,16 @@ const { title, skipPrivacyGate = false } = Astro.props;
               appContent.hidden = false;
             };
 
-            /**
-             * DEMO: Any non-empty code opens the app.
-             * Codes matching known demo tokens will also hydrate guest data.
-             */
-            const validateCode = async (code: string): Promise<boolean> => {
-              if (!code) return false;
-              // Let validateRSVPToken run — it returns null for unknown codes but we still allow entry
-              await validateRSVPToken(code);
-              return true;
-            };
-
             const attemptUnlock = async (code: string) => {
               setFormState(true);
               hideError();
-              const isValid = await validateCode(code);
+              // Solo se permite el acceso si el código corresponde a una
+              // invitación real registrada en Firestore.
+              const guest = code ? await validateRSVPToken(code) : null;
               setFormState(false);
 
-              if (!isValid) {
-                showError('Ingresa un código para continuar.');
+              if (!guest) {
+                showError('El código no es válido. Revisa el enlace de tu invitación.');
                 return false;
               }
 
@@ -124,13 +115,9 @@ const { title, skipPrivacyGate = false } = Astro.props;
                 localStorage.setItem('weddingGuestCode', code);
               } catch {}
 
-              // Dispatch guest data event for personalization if token is recognised
-              const guest = await validateRSVPToken(code);
-              if (guest) {
-                window.dispatchEvent(
-                  new CustomEvent('guest-identified', { detail: guest }),
-                );
-              }
+              window.dispatchEvent(
+                new CustomEvent('guest-identified', { detail: guest }),
+              );
 
               return true;
             };
