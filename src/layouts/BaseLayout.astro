@@ -118,6 +118,12 @@ const { title, skipPrivacyGate = false } = Astro.props;
 
               openApp();
 
+              // Recordar el código para reusarlo al volver desde otras páginas
+              // (p. ej. el "Volver a la invitación" de /fotos).
+              try {
+                localStorage.setItem('weddingGuestCode', code);
+              } catch {}
+
               // Dispatch guest data event for personalization if token is recognised
               const guest = await validateRSVPToken(code);
               if (guest) {

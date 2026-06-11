@@ -6,7 +6,7 @@ import PhotoUpload from "../components/PhotoUpload.astro";
 <BaseLayout title="Subir Fotos" skipPrivacyGate={true}>
   <main class="fotos-main">
     <header class="fotos-header">
-      <a href="/" class="back-link">← Volver a la invitación</a>
+      <a href="/" id="back-link" class="back-link">← Volver a la invitación</a>
       <h1>Comparte tus Fotos</h1>
       <p class="fotos-sub">
         Captura los momentos especiales del evento y compártelos con nosotros.
@@ -18,6 +18,24 @@ import PhotoUpload from "../components/PhotoUpload.astro";
     </section>
   </main>
 </BaseLayout>
+
+<script>
+  // "Volver a la invitación" debe regresar con el código que el invitado
+  // ingresó antes (lo tomamos de la URL actual o de localStorage).
+  const backLink = document.getElementById("back-link") as HTMLAnchorElement | null;
+  if (backLink) {
+    const params = new URLSearchParams(window.location.search);
+    let code = params.get("codigo")?.trim() || params.get("token")?.trim() || "";
+    if (!code) {
+      try {
+        code = localStorage.getItem("weddingGuestCode")?.trim() || "";
+      } catch {}
+    }
+    if (code) {
+      backLink.href = `/?codigo=${encodeURIComponent(code)}`;
+    }
+  }
+</script>
 
 <style>
   .fotos-main {
