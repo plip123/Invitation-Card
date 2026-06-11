@@ -9,10 +9,11 @@ import RSVP from "../components/RSVP.astro";
 
 // ── Demo data — no personal info ──────────────────────────────────────────────
 const eventTitle = "Mis XV Años";
+const calendarTitle = "XV de Antonella Di Maggio";
 const eventDateLabel = "Sábado 15 de Agosto — 7:00 PM";
 const eventVenue = "Club Táchira Tennis";
 const eventAddress = "Calle Caurimare, Colinas de Bello Monte, Caracas";
-const eventMapUrl = "https://maps.google.com/?q=Club+Tachira+Tennis,+Caracas";
+const eventMapUrl = "https://maps.app.goo.gl/rBiZDSEwmK2ecxRo8";
 
 const formatGcal = (d: Date) =>
   d
@@ -27,7 +28,7 @@ const calDetails = eventDateLabel + ". Lugar: " + eventVenue + ".";
 const calLocation = eventVenue + ", " + eventAddress;
 const calParams = new URLSearchParams({
   action: "TEMPLATE",
-  text: eventTitle,
+  text: calendarTitle,
   dates: calDates,
   details: calDetails,
   location: calLocation,
@@ -1428,6 +1429,20 @@ const heroBackgroundPhoto = "/fotos/Bolas P.png";
 
     setPaused();
 
+    // La música debe comenzar desde el segundo 5 la primera vez que suena.
+    let introStartDone = false;
+    const startFromIntro = () => {
+      if (introStartDone) return;
+      introStartDone = true;
+      const seek = () => {
+        try {
+          backgroundAudio.currentTime = 5;
+        } catch {}
+      };
+      if (backgroundAudio.readyState >= 1) seek();
+      else backgroundAudio.addEventListener("loadedmetadata", seek, { once: true });
+    };
+
     document.documentElement.style.overflow = "hidden";
     document.body.style.overflow = "hidden";
 
@@ -1435,6 +1450,7 @@ const heroBackgroundPhoto = "/fotos/Bolas P.png";
       if (withMusic) {
         try {
           backgroundAudio.muted = false;
+          startFromIntro();
           await backgroundAudio.play();
           setPlaying();
         } catch {
@@ -1455,6 +1471,7 @@ const heroBackgroundPhoto = "/fotos/Bolas P.png";
     musicFab.addEventListener("click", async () => {
       if (backgroundAudio.paused) {
         try {
+          startFromIntro();
           await backgroundAudio.play();
           setPlaying();
         } catch {

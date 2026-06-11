@@ -19,7 +19,9 @@ export interface Guest {
  * Returns null if token is not found.
  */
 export async function validateRSVPToken(token: string): Promise<Guest | null> {
-  const key = token.trim().toUpperCase();
+  // Los IDs de documento distinguen mayúsculas/minúsculas y los tokens
+  // generados por el panel son en minúsculas, así que se usa tal cual.
+  const key = token.trim();
   try {
     const snap = await getDoc(doc(db, 'guests', key));
     if (!snap.exists()) return null;
@@ -37,7 +39,7 @@ export async function submitRSVP(
   confirmedGuests: number,
   status: 'confirmed' | 'declined',
 ): Promise<boolean> {
-  const key = token.trim().toUpperCase();
+  const key = token.trim();
   try {
     await updateDoc(doc(db, 'guests', key), { status, confirmedGuests });
     return true;
