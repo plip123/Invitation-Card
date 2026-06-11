@@ -1795,7 +1795,7 @@ const adminPassword = import.meta.env.PUBLIC_ADMIN_PASSWORD || "admin123";
     }
 
     const songsSnap = await getDocs(
-      query(collection(db, "songRequests"), ...constraints),
+      query(collection(db, "songs"), ...constraints),
     );
 
     songHasNext = songsSnap.docs.length > SONG_PAGE_SIZE;
@@ -1818,7 +1818,7 @@ const adminPassword = import.meta.env.PUBLIC_ADMIN_PASSWORD || "admin123";
       const data = docSnap.data() as {
         title?: string;
         artist?: string | null;
-        youtubeUrl?: string | null;
+        youtube?: string | null;
         guestToken?: string | null;
       };
 
@@ -1831,9 +1831,9 @@ const adminPassword = import.meta.env.PUBLIC_ADMIN_PASSWORD || "admin123";
       artistCell.textContent = data.artist || "-";
 
       const youtubeCell = document.createElement("td");
-      if (data.youtubeUrl) {
+      if (data.youtube) {
         const link = document.createElement("a");
-        link.href = data.youtubeUrl;
+        link.href = data.youtube;
         link.target = "_blank";
         link.rel = "noopener noreferrer";
         link.textContent = "Abrir";
@@ -1980,7 +1980,7 @@ const adminPassword = import.meta.env.PUBLIC_ADMIN_PASSWORD || "admin123";
     }
 
     try {
-      await deleteDoc(doc(db, "songRequests", songId));
+      await deleteDoc(doc(db, "songs", songId));
       await loadSongPage();
     } catch {
       await showAlertModal("No se pudo borrar la canción.");

@@ -5,11 +5,16 @@ service cloud.firestore {
     match /guests/{token} {
       allow read, write: if true; // cambiar en producción final
     }
-    match /songRequests/{doc} {
+    match /songs/{doc} {
       // Los invitados crean sugerencias; el panel (sin auth) las lee y borra.
       allow create: if true;
       allow read: if true;
       allow delete: if true;
+    }
+    match /appSettings/{doc} {
+      // Configuración del panel (p. ej. activar/desactivar subida de fotos).
+      allow read: if true;
+      allow write: if true;
     }
   }
 }

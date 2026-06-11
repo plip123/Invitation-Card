@@ -5,8 +5,11 @@ service firebase.storage {
       // Lectura pública: necesaria para getDownloadURL tras subir y para que
       // el panel de anfitrión liste/muestre las fotos del evento.
       allow read: if true;
-      allow write: if request.resource.size < 10 * 1024 * 1024
+      // create/update validan tamaño y tipo; en delete request.resource es
+      // null, por eso el borrado va en su propia regla.
+      allow create, update: if request.resource.size < 10 * 1024 * 1024
                    && request.resource.contentType.matches('image/.*');
+      allow delete: if true;
     }
   }
 }

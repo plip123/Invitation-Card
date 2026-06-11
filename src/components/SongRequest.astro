@@ -137,10 +137,10 @@
       const guestToken =
         params.get('codigo')?.trim() || params.get('token')?.trim() || null;
 
-      await addDoc(collection(db, 'songRequests'), {
+      await addDoc(collection(db, 'songs'), {
         title,
         artist: artistInput?.value.trim() || null,
-        youtubeUrl: youtubeInput?.value.trim() || null,
+        youtube: youtubeInput?.value.trim() || null,
         guestToken,
         createdAt: serverTimestamp(),
       });
