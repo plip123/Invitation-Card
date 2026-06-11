@@ -3,17 +3,13 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 import PhotoUpload from "../components/PhotoUpload.astro";
 ---
 
-<BaseLayout title="Subir Fotos — Demo" skipPrivacyGate={true}>
+<BaseLayout title="Subir Fotos" skipPrivacyGate={true}>
   <main class="fotos-main">
     <header class="fotos-header">
       <a href="/" class="back-link">← Volver a la invitación</a>
       <h1>Comparte tus Fotos</h1>
       <p class="fotos-sub">
         Captura los momentos especiales del evento y compártelos con nosotros.
-      </p>
-      <p class="demo-banner">
-        🎭 <strong>Demo</strong> — Esta página muestra el flujo de carga de fotos
-        sin guardar nada.
       </p>
     </header>
 
@@ -52,17 +48,6 @@ import PhotoUpload from "../components/PhotoUpload.astro";
   .fotos-sub {
     margin-bottom: 0.75rem;
     font-size: 1.2rem;
-  }
-
-  .demo-banner {
-    display: inline-block;
-    background: #fff8ec;
-    border: 1px solid #e5c97a;
-    border-radius: 8px;
-    padding: 0.5rem 1rem;
-    font-size: 1rem;
-    color: #7a5a1e;
-    margin-bottom: 0;
   }
 
   .fotos-section {
