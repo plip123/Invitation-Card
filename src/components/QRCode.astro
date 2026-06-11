@@ -1,6 +1,6 @@
 ---
-// DEMO: URL genérica de ejemplo
-const photoUploadUrl = "https://example.com/fotos";
+// La URL del QR se deriva del dominio configurado en astro.config.mjs (`site`).
+const photoUploadUrl = new URL("/fotos", Astro.site).toString();
 const qrImageUrl = `https://quickchart.io/qr?text=${encodeURIComponent(photoUploadUrl)}&size=280`;
 ---
 
@@ -18,16 +18,14 @@ const qrImageUrl = `https://quickchart.io/qr?text=${encodeURIComponent(photoUplo
     <img
       class="qr-image"
       src={qrImageUrl}
-      alt="Código QR de ejemplo (Demo)"
+      alt="Código QR para subir fotos del evento"
       loading="lazy"
     />
-    <p class="qr-link qr-demo-note">
-      ⚠️ Demo — este QR apunta a una URL de ejemplo
-    </p>
+    <p class="qr-link">{photoUploadUrl}</p>
   </div>
 
   <p class="qr-note">
-    En producción, el QR enlazaría a la página de carga de fotos del evento.
+    Escanea el código o abre el enlace para subir tus fotos del evento.
   </p>
 </div>
 
@@ -90,10 +88,6 @@ const qrImageUrl = `https://quickchart.io/qr?text=${encodeURIComponent(photoUplo
     margin-top: 1rem;
     word-break: break-all;
     font-size: 1.05rem;
-  }
-
-  .qr-demo-note {
-    color: #9b6b3a;
   }
 
   .qr-note {
