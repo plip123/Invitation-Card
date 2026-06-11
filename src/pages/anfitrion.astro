@@ -973,6 +973,30 @@ const adminPassword = import.meta.env.PUBLIC_ADMIN_PASSWORD || "admin123";
   }
 </style>
 
+<!-- Light theme override scoped to this page (each Astro page is its own HTML document). -->
+<style is:global>
+  :root {
+    --bg: #f7f4ee;
+    --surface: #ffffff;
+    --surface-soft: #f1ece2;
+    --text: #2c2a27;
+    --title: #2c2a27;
+    --muted: #6e6a63;
+    --line: #e2dcd0;
+    --primary-soft: #f6efd8;
+    --shadow-sm: 0 8px 20px rgba(40, 30, 15, 0.08);
+    --shadow-md: 0 18px 34px rgba(40, 30, 15, 0.14);
+  }
+
+  button:hover {
+    background: var(--primary-soft);
+  }
+
+  button:disabled {
+    background: var(--surface-soft);
+  }
+</style>
+
 <script>
   import { db, storage } from "../lib/firebase";
   import {
