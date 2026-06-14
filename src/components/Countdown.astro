@@ -106,6 +106,12 @@ const weddingDate = "2026-08-15T19:00:00";
     display: block;
     min-width: 2ch;
     text-align: center;
+    text-shadow: 0 0 20px rgba(212, 175, 55, 0.15);
+    transition: transform 0.3s ease, text-shadow 0.3s ease;
+  }
+
+  .number.changed {
+    animation: number-pop 0.4s cubic-bezier(0.22, 1, 0.36, 1);
   }
 
   .label {
@@ -115,6 +121,21 @@ const weddingDate = "2026-08-15T19:00:00";
     color: var(--muted);
     margin-top: 0.3rem;
     display: block;
+  }
+
+  @keyframes number-pop {
+    0% {
+      transform: scale(1);
+      text-shadow: 0 0 20px rgba(212, 175, 55, 0.15);
+    }
+    50% {
+      transform: scale(1.08);
+      text-shadow: 0 0 30px rgba(212, 175, 55, 0.35);
+    }
+    100% {
+      transform: scale(1);
+      text-shadow: 0 0 20px rgba(212, 175, 55, 0.15);
+    }
   }
 
   @media (max-width: 540px) {
@@ -143,15 +164,24 @@ const weddingDate = "2026-08-15T19:00:00";
     return String(n).padStart(2, "0");
   }
 
+  function updateNumber(el: HTMLElement | null, value: string) {
+    if (!el) return;
+    if (el.textContent !== value) {
+      el.textContent = value;
+      el.classList.add("changed");
+      setTimeout(() => el.classList.remove("changed"), 400);
+    }
+  }
+
   function tick() {
     const now = Date.now();
     const diff = target - now;
 
     if (diff <= 0) {
-      if (daysEl) daysEl.textContent = "00";
-      if (hoursEl) hoursEl.textContent = "00";
-      if (minutesEl) minutesEl.textContent = "00";
-      if (secondsEl) secondsEl.textContent = "00";
+      updateNumber(daysEl, "00");
+      updateNumber(hoursEl, "00");
+      updateNumber(minutesEl, "00");
+      updateNumber(secondsEl, "00");
       return;
     }
 
@@ -160,10 +190,10 @@ const weddingDate = "2026-08-15T19:00:00";
     const minutes = Math.floor((diff % 3600000) / 60000);
     const seconds = Math.floor((diff % 60000) / 1000);
 
-    if (daysEl) daysEl.textContent = pad(days);
-    if (hoursEl) hoursEl.textContent = pad(hours);
-    if (minutesEl) minutesEl.textContent = pad(minutes);
-    if (secondsEl) secondsEl.textContent = pad(seconds);
+    updateNumber(daysEl, pad(days));
+    updateNumber(hoursEl, pad(hours));
+    updateNumber(minutesEl, pad(minutes));
+    updateNumber(secondsEl, pad(seconds));
   }
 
   tick();

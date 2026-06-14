@@ -101,17 +101,17 @@
   .upload-disabled {
     margin-top: 1.4rem;
     padding: 1rem 1.1rem;
-    border: 1px solid #e5c97a;
-    background: #fff8ec;
+    border: 1px solid var(--primary);
+    background: var(--primary-soft);
     border-radius: 8px;
-    color: #7a5a1e;
+    color: var(--primary);
     text-align: center;
     font-weight: 600;
     line-height: 1.5;
   }
 
   .upload-info-banner {
-    background: var(--surface-soft);
+    background: rgba(31, 26, 10, 0.5);
     border: 1px solid var(--line);
     border-radius: 8px;
     padding: 0.65rem 0.9rem;
@@ -124,27 +124,31 @@
   .btn-select {
     background: var(--primary);
     border-color: var(--primary);
-    color: #0D0D0D;
+    color: #1a1508;
     width: 100%;
     margin-bottom: 1rem;
+    transition: all 0.2s ease;
   }
 
   .btn-select:hover {
-    background: var(--primary-soft);
-    color: var(--primary);
+    background: #E8C84A;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(212, 175, 55, 0.35);
   }
 
   .btn-upload {
     background: var(--primary);
     border-color: var(--primary);
-    color: #0D0D0D;
+    color: #1a1508;
     width: 100%;
     margin-top: 1rem;
+    transition: all 0.2s ease;
   }
 
   .btn-upload:hover {
-    background: var(--primary-soft);
-    color: var(--primary);
+    background: #E8C84A;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(212, 175, 55, 0.35);
   }
 
   .preview-container {
@@ -176,16 +180,16 @@
   }
 
   .message.success {
-    background: var(--primary-soft);
-    color: var(--primary);
-    border: 1px solid #c6d8bf;
+    background: var(--success-soft);
+    color: #8BC4A0;
+    border: 1px solid var(--success);
     display: block;
   }
 
   .message.error {
-    background: #f8eaea;
-    color: var(--danger);
-    border: 1px solid #e0b0b0;
+    background: var(--danger-soft);
+    color: #E8A0A0;
+    border: 1px solid var(--danger);
     display: block;
   }
 

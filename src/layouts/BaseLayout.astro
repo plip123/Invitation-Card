@@ -161,16 +161,18 @@ const { title, skipPrivacyGate = false } = Astro.props;
   }
 
   :root {
-    --bg: transparent;
+    --bg: #BFA074;
     --surface: #755E28;
     --surface-soft: #BFA074;
     --text: #FFFFFF;
-    --muted: #999B9B;
+    --muted: #D4C4A8;
     --line: #BFA074;
     --primary: #D4AF37;
     --primary-soft: #1F1A0A;
-    --success: #8A9597;
+    --success: #5A8A6E;
+    --success-soft: #2A3A2E;
     --danger: #C0504D;
+    --danger-soft: #3A1A1A;
     --radius-lg: 18px;
     --radius-md: 12px;
     --shadow-sm: 0 10px 24px rgba(0, 0, 0, 0.35);
@@ -201,7 +203,7 @@ const { title, skipPrivacyGate = false } = Astro.props;
     align-items: center;
     justify-content: center;
     padding: 1rem;
-    background-color: #b8975a;
+    background-color: var(--surface);
     background-image: url('/gate-escarcha.png');
     background-size: cover;
     background-position: center;
@@ -241,7 +243,7 @@ const { title, skipPrivacyGate = false } = Astro.props;
 
   .privacy-gate-card {
     width: min(100%, 440px);
-    background: #755e28;
+    background: var(--surface);
     border: 1px solid rgba(212, 175, 55, 0.5);
     border-radius: 20px;
     box-shadow: 0 24px 48px rgba(0,0,0,0.5);
@@ -254,12 +256,12 @@ const { title, skipPrivacyGate = false } = Astro.props;
   .privacy-gate-card h1 {
     font-size: 2rem;
     margin-bottom: 0.5rem;
-    color: #ffffff;
+    color: var(--text);
   }
 
   .privacy-gate-card > p {
     margin-bottom: 0.75rem;
-    color: rgba(255,255,255,0.88);
+    color: var(--muted);
   }
 
   .demo-hint {
@@ -281,6 +283,20 @@ const { title, skipPrivacyGate = false } = Astro.props;
   .privacy-gate-form input {
     margin-bottom: 0;
     border-radius: 16px;
+    background: rgba(31, 26, 10, 0.6);
+    border: 1px solid var(--line);
+    color: var(--text);
+  }
+
+  .privacy-gate-form input::placeholder {
+    color: #A09070;
+    opacity: 1;
+  }
+
+  .privacy-gate-form input:focus {
+    background: rgba(31, 26, 10, 0.8);
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.18);
   }
 
   .privacy-gate-error {
@@ -372,11 +388,17 @@ const { title, skipPrivacyGate = false } = Astro.props;
     padding: 0.75rem;
     margin-bottom: 1rem;
     border: 1px solid var(--line);
-    background: var(--bg);
+    background: rgba(31, 26, 10, 0.6);
     border-radius: 5px;
     font-size: 1.16rem;
     font-family: inherit;
     color: var(--text);
+  }
+
+  input::placeholder,
+  textarea::placeholder {
+    color: #A09070;
+    opacity: 1;
   }
 
   input:focus,
@@ -384,9 +406,14 @@ const { title, skipPrivacyGate = false } = Astro.props;
     outline: none;
     border-color: var(--primary);
     box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.18);
+    background: rgba(31, 26, 10, 0.8);
   }
 
   @media (max-width: 768px) {
+    :root {
+      --bg: transparent;
+    }
+
     section {
       padding: 0;
     }

@@ -153,6 +153,7 @@ const appShellBackgroundPhoto = "/gate-escarcha.png";
         <div class="event-block event-actions-card">
           <h3>Acciones de la invitación</h3>
           <p>Selecciona una opción para continuar con tu confirmación.</p>
+          <p id="event-actions-status" class="event-actions-status" hidden></p>
           <div id="event-actions-buttons" class="event-actions-buttons">
             <button
               id="event-confirm-action"
@@ -165,7 +166,6 @@ const appShellBackgroundPhoto = "/gate-escarcha.png";
               class="pill-btn action-decline">No podré asistir</button
             >
           </div>
-          <p id="event-actions-status" class="event-actions-status" hidden></p>
         </div>
       </section>
 
@@ -274,14 +274,43 @@ const appShellBackgroundPhoto = "/gate-escarcha.png";
   /* ── Reveal animation ──────────────────────────────────── */
   .reveal {
     opacity: 0;
-    transform: translateY(24px);
+    transform: translateY(28px) scale(0.98);
     transition:
-      opacity 0.65s ease,
-      transform 0.65s ease;
+      opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1),
+      transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
   }
   .reveal.is-visible {
     opacity: 1;
-    transform: translateY(0);
+    transform: translateY(0) scale(1);
+  }
+
+  /* Staggered reveal delays for children */
+  .reveal.is-visible .section-card,
+  .reveal.is-visible .event-block {
+    opacity: 0;
+    transform: translateY(16px);
+    animation: card-enter 0.6s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  }
+  .reveal.is-visible .section-card:nth-child(1),
+  .reveal.is-visible .event-block:nth-child(1) { animation-delay: 0.1s; }
+  .reveal.is-visible .section-card:nth-child(2),
+  .reveal.is-visible .event-block:nth-child(2) { animation-delay: 0.2s; }
+  .reveal.is-visible .section-card:nth-child(3),
+  .reveal.is-visible .event-block:nth-child(3) { animation-delay: 0.3s; }
+  .reveal.is-visible .section-card:nth-child(4),
+  .reveal.is-visible .event-block:nth-child(4) { animation-delay: 0.4s; }
+  .reveal.is-visible .section-card:nth-child(5),
+  .reveal.is-visible .event-block:nth-child(5) { animation-delay: 0.5s; }
+
+  @keyframes card-enter {
+    from {
+      opacity: 0;
+      transform: translateY(16px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
 
   /* ── Section card ──────────────────────────────────────── */
@@ -470,7 +499,7 @@ const appShellBackgroundPhoto = "/gate-escarcha.png";
     position: fixed;
     inset: 0;
     z-index: 140;
-    background-color: #b8975a;
+    background-color: var(--surface);
     background-image: url('/gate-escarcha.png');
     background-size: cover;
     background-position: center;
@@ -513,8 +542,8 @@ const appShellBackgroundPhoto = "/gate-escarcha.png";
 
   .welcome-card {
     width: min(100%, 440px);
-    background: #755e28;
-    border: 1px solid rgba(212, 175, 55, 0.5);
+    background: var(--surface);
+    border: 1px solid var(--primary);
     border-radius: 20px;
     box-shadow: 0 24px 48px rgba(0,0,0,0.5);
     padding: 1.6rem 1.4rem;
@@ -537,24 +566,32 @@ const appShellBackgroundPhoto = "/gate-escarcha.png";
     gap: 0.55rem;
   }
   .welcome-actions .secondary {
-    background: rgba(0, 0, 0, 0.65);
-    border: 1px solid #000;
+    background: var(--primary);
+    border: 1px solid var(--primary);
     border-radius: 20px;
-    color: #ffffff;
+    color: #1a1508;
     width: 100%;
+    font-weight: 700;
+    transition: all 0.2s ease;
   }
   .welcome-actions .secondary:hover {
-    background: rgba(0, 0, 0, 0.80);
+    background: #E8C84A;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(212, 175, 55, 0.35);
   }
   .welcome-actions .plain {
-    background: rgba(0, 0, 0, 0.35);
-    border: none;
+    background: transparent;
+    border: 1px solid var(--primary);
     border-radius: 20px;
-    color: #ffffff;
+    color: var(--primary);
     width: 100%;
+    font-weight: 600;
+    transition: all 0.2s ease;
   }
   .welcome-actions .plain:hover {
-    background: rgba(0, 0, 0, 0.50);
+    background: var(--primary-soft);
+    color: var(--primary);
+    transform: translateY(-2px);
   }
 
   .welcome-gate-disco {
@@ -615,6 +652,7 @@ const appShellBackgroundPhoto = "/gate-escarcha.png";
   .guest-closing {
     margin: 0.45rem 0 0;
     font-size: 1.22rem;
+    font-weight: 600;
   }
 
   /* ── Event section ─────────────────────────────────────── */
@@ -757,8 +795,10 @@ const appShellBackgroundPhoto = "/gate-escarcha.png";
     color: #fff;
   }
   .action-confirm:hover {
-    background: #5f7556;
-    border-color: #5f7556;
+    background: #B8962E;
+    border-color: #B8962E;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(212, 175, 55, 0.35);
   }
 
   .action-decline {
@@ -767,7 +807,9 @@ const appShellBackgroundPhoto = "/gate-escarcha.png";
     color: #fff;
   }
   .action-decline:hover {
-    background: #a54242;
+    background: #A04040;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(192, 80, 77, 0.3);
   }
 
   .action-host {
@@ -798,8 +840,8 @@ const appShellBackgroundPhoto = "/gate-escarcha.png";
     border-color: var(--primary);
   }
   .event-actions-status.is-declined {
-    background: #f8eaea;
-    color: var(--danger);
+    background: var(--danger-soft);
+    color: #E8A0A0;
     border-color: var(--danger);
   }
 
@@ -808,10 +850,11 @@ const appShellBackgroundPhoto = "/gate-escarcha.png";
     width: 100%;
     min-height: clamp(200px, 28vw, 360px);
     background: url('/bolas-bg.png') center / cover no-repeat;
+    display: none;
   }
 
   .bolas-final-section {
-    background: url('/fotos/Bolas D.png') center / cover no-repeat;
+    background: url('/bolas-bg.png') center / cover no-repeat;
   }
 
   .bolas-final-card {
@@ -829,24 +872,29 @@ const appShellBackgroundPhoto = "/gate-escarcha.png";
     width: 58px;
     height: 58px;
     border-radius: 50%;
-    border: 1px solid #d6c4b2;
-    background: rgba(252, 245, 236, 0.95);
+    border: 1px solid var(--primary);
+    background: var(--surface);
     font-size: 1.15rem;
     z-index: 60;
     color: var(--primary);
-    box-shadow: 0 12px 25px rgba(75, 58, 44, 0.2);
+    box-shadow: 0 12px 25px rgba(0, 0, 0, 0.35);
     display: grid;
     place-items: center;
     padding: 0;
     line-height: 0;
     -webkit-tap-highlight-color: transparent;
     outline: none;
-    transition: transform 0.24s ease;
+    transition: all 0.24s ease;
+  }
+  .music-fab:hover {
+    transform: scale(1.08);
+    background: var(--primary-soft);
+    box-shadow: 0 6px 20px rgba(212, 175, 55, 0.25);
   }
   .music-fab:focus-visible {
     box-shadow:
-      0 0 0 3px rgba(111, 135, 101, 0.28),
-      0 12px 25px rgba(75, 58, 44, 0.2);
+      0 0 0 3px rgba(212, 175, 55, 0.28),
+      0 12px 25px rgba(0, 0, 0, 0.35);
   }
   .music-fab.is-playing {
     animation: pulse 1.4s infinite;
@@ -1051,10 +1099,10 @@ const appShellBackgroundPhoto = "/gate-escarcha.png";
   }
   @keyframes pulse {
     0% {
-      box-shadow: 0 0 0 0 rgba(55, 95, 143, 0.32);
+      box-shadow: 0 0 0 0 rgba(212, 175, 55, 0.35);
     }
     100% {
-      box-shadow: 0 0 0 14px rgba(55, 95, 143, 0);
+      box-shadow: 0 0 0 14px rgba(212, 175, 55, 0);
     }
   }
 
@@ -1434,9 +1482,13 @@ const appShellBackgroundPhoto = "/gate-escarcha.png";
     const obs = new IntersectionObserver(
       (entries) =>
         entries.forEach((e) => {
-          if (e.isIntersecting) e.target.classList.add("is-visible");
+          if (e.isIntersecting) {
+            e.target.classList.add("is-visible");
+          } else {
+            e.target.classList.remove("is-visible");
+          }
         }),
-      { threshold: 0.15 },
+      { threshold: 0.1, rootMargin: "0px 0px -40px 0px" },
     );
     revealItems.forEach((el) => obs.observe(el));
   }

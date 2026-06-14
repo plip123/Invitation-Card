@@ -21,7 +21,6 @@ const qrImageUrl = `https://quickchart.io/qr?text=${encodeURIComponent(photoUplo
       alt="Código QR para subir fotos del evento"
       loading="lazy"
     />
-    <p class="qr-link">{photoUploadUrl}</p>
   </div>
 
   <a href="/fotos" class="qr-upload-btn">
@@ -50,9 +49,9 @@ const qrImageUrl = `https://quickchart.io/qr?text=${encodeURIComponent(photoUplo
     margin: 1.1rem auto 0;
     padding: 1.2rem;
     max-width: 380px;
-    background: #f7efe3;
+    background: var(--surface-soft);
     border-radius: 0;
-    border: 1px solid #e5d4bf;
+    border: 1px solid var(--line);
   }
 
   .qr-heading {
@@ -85,8 +84,14 @@ const qrImageUrl = `https://quickchart.io/qr?text=${encodeURIComponent(photoUplo
   .qr-image {
     width: min(280px, 70vw);
     height: auto;
-    border: 8px solid #fff;
-    box-shadow: 0 10px 22px rgba(88, 63, 43, 0.12);
+    border: 8px solid var(--surface);
+    box-shadow: 0 10px 22px rgba(0, 0, 0, 0.25);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .qr-image:hover {
+    transform: scale(1.03);
+    box-shadow: 0 14px 32px rgba(0, 0, 0, 0.35), 0 0 0 1px rgba(212, 175, 55, 0.2);
   }
 
   .qr-link {
@@ -111,36 +116,49 @@ const qrImageUrl = `https://quickchart.io/qr?text=${encodeURIComponent(photoUplo
     border-radius: 999px;
     background: var(--primary);
     border: 1px solid var(--primary);
-    color: #0d0d0d;
+    color: #1a1508;
     font-weight: 700;
     font-size: 1.15rem;
     text-decoration: none;
     transition:
       transform 0.2s ease,
-      background 0.2s ease;
+      background 0.2s ease,
+      box-shadow 0.2s ease;
   }
 
   .qr-upload-btn:hover {
     transform: translateY(-2px);
-    background: var(--primary-soft);
-    color: var(--primary);
+    background: #E8C84A;
+    box-shadow: 0 6px 20px rgba(212, 175, 55, 0.35);
   }
 
   .qr-upload-btn-icon {
     width: 20px;
     height: 20px;
     object-fit: contain;
+    filter: brightness(0) saturate(100%) invert(10%) sepia(20%) saturate(800%) hue-rotate(5deg);
   }
 
   @keyframes qr-camera-flash {
     0%,
-    85%,
+    70%,
     100% {
       opacity: 0;
     }
-    90%,
-    95% {
+    75% {
+      opacity: 0.6;
+    }
+    80% {
       opacity: 1;
+    }
+    85% {
+      opacity: 0.3;
+    }
+    90% {
+      opacity: 1;
+    }
+    95% {
+      opacity: 0;
     }
   }
 </style>

@@ -13,16 +13,17 @@
     <h2>Regalos</h2>
   </div>
   <p>
-    Tu presencia es mi mayor regalo. Si deseas tener un detalle adicional,
-    con todo el cariño lo recibo.
+    Tu compañía en este día tan especial es el regalo más grande que
+    puedo recibir. Si además deseas tener un detalle, lo apreciaré con
+    todo mi cariño.
   </p>
 
   <div class="gift-grid gift-grid--single">
     <article class="gift-card gift-card--center">
       <h3>Lluvia de sobres</h3>
       <p>
-        Tu presencia es el mejor regalo. Si deseas tener un detalle
-        adicional, recibiremos sobres con mucho cariño el día del evento.
+        Si deseas obsequiarme algo, el día del evento recibiremos tu
+        sobre con todo cariño. ¡Lo importante es que me acompañes!
       </p>
       <p class="gift-note">
         ¡Gracias por acompañarme en este día tan especial! 🎀
@@ -87,7 +88,14 @@
     display: flex;
     flex-direction: column;
     gap: 0.45rem;
+    opacity: 0;
+    transform: translateY(16px);
+    animation: card-enter 0.7s cubic-bezier(0.22, 1, 0.36, 1) forwards;
   }
+
+  .gift-card:nth-child(1) { animation-delay: 0.1s; }
+  .gift-card:nth-child(2) { animation-delay: 0.2s; }
+  .gift-card:nth-child(3) { animation-delay: 0.3s; }
 
   .gift-card h3 {
     margin-bottom: 0.35rem;
@@ -124,10 +132,24 @@
       transform: translateY(0) rotate(0deg);
     }
     25% {
-      transform: translateY(-4px) rotate(-3deg);
+      transform: translateY(-6px) rotate(-4deg);
+    }
+    50% {
+      transform: translateY(-3px) rotate(0deg);
     }
     75% {
-      transform: translateY(-2px) rotate(3deg);
+      transform: translateY(-5px) rotate(3deg);
+    }
+  }
+
+  @keyframes card-enter {
+    from {
+      opacity: 0;
+      transform: translateY(16px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
     }
   }
 </style>
