@@ -209,6 +209,10 @@ const { title, skipPrivacyGate = false } = Astro.props;
     overflow: hidden;
   }
 
+  .privacy-gate-main[hidden] {
+    display: none;
+  }
+
   .privacy-gate-ribbons {
     position: absolute;
     inset: 0;
