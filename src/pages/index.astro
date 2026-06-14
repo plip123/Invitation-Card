@@ -44,6 +44,7 @@ const heroBackgroundPhoto = "/fotos/Bolas P.png";
   <main>
     <!-- Welcome gate (music) -->
     <section id="welcome-gate" class="welcome-gate" aria-modal="true">
+      <img src="/gate-sello-a.png" alt="" class="welcome-gate-seal" aria-hidden="true" />
       <div class="welcome-card">
         <h2>Bienvenido</h2>
         <p>¿Cómo quieres ingresar a la invitación?</p>
@@ -56,6 +57,8 @@ const heroBackgroundPhoto = "/fotos/Bolas P.png";
           </button>
         </div>
       </div>
+      <img src="/gate-bolas-disco.png" alt="" class="welcome-gate-disco" aria-hidden="true" />
+      <img src="/gate-ribbons.svg" alt="" class="welcome-gate-ribbons" aria-hidden="true" />
     </section>
 
     <!-- Music FAB -->
@@ -501,29 +504,65 @@ const heroBackgroundPhoto = "/fotos/Bolas P.png";
     position: fixed;
     inset: 0;
     z-index: 140;
-    background: rgba(37, 28, 22, 0.56);
-    display: grid;
-    place-items: center;
+    background-color: #b8975a;
+    background-image: url('/gate-escarcha.png');
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0;
     padding: 1rem;
+    overflow: hidden;
   }
 
   .welcome-gate[hidden] {
     display: none;
   }
 
+  .welcome-gate-ribbons {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .welcome-gate-seal {
+    width: 160px;
+    height: 160px;
+    object-fit: contain;
+    display: block;
+    position: absolute;
+    top: 25%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 2;
+    pointer-events: none;
+    filter: drop-shadow(0 4px 12px rgba(0,0,0,0.4));
+  }
+
   .welcome-card {
-    width: min(460px, 92vw);
-    background: var(--surface);
-    border: 1px solid var(--line);
-    box-shadow: var(--shadow-md);
-    padding: 1.3rem 1.1rem;
+    width: min(100%, 440px);
+    background: #755e28;
+    border: 1px solid rgba(212, 175, 55, 0.5);
+    border-radius: 20px;
+    box-shadow: 0 24px 48px rgba(0,0,0,0.5);
+    padding: 1.6rem 1.4rem;
     text-align: center;
+    position: relative;
+    z-index: 2;
   }
 
   .welcome-card h2 {
+    color: #ffffff;
     margin-bottom: 0.3rem;
   }
   .welcome-card p {
+    color: rgba(255,255,255,0.88);
     margin-bottom: 0.9rem;
   }
 
@@ -532,14 +571,37 @@ const heroBackgroundPhoto = "/fotos/Bolas P.png";
     gap: 0.55rem;
   }
   .welcome-actions .secondary {
-    background: transparent;
-    color: var(--primary);
-    border: 1px solid var(--primary);
+    background: rgba(0, 0, 0, 0.65);
+    border: 1px solid #000;
+    border-radius: 20px;
+    color: #ffffff;
+    width: 100%;
+  }
+  .welcome-actions .secondary:hover {
+    background: rgba(0, 0, 0, 0.80);
   }
   .welcome-actions .plain {
-    background: var(--surface);
-    color: var(--text);
-    border: 1px solid var(--line);
+    background: rgba(0, 0, 0, 0.35);
+    border: none;
+    border-radius: 20px;
+    color: #ffffff;
+    width: 100%;
+  }
+  .welcome-actions .plain:hover {
+    background: rgba(0, 0, 0, 0.50);
+  }
+
+  .welcome-gate-disco {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: clamp(120px, 18vw, 220px);
+    object-fit: cover;
+    object-position: center bottom;
+    pointer-events: none;
+    z-index: 1;
+    opacity: 0.95;
   }
 
   /* ── Countdown section ─────────────────────────────────── */
