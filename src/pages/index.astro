@@ -38,6 +38,7 @@ const calendarEventUrl =
 
 // Hero photo
 const heroBackgroundPhoto = "/bolas-bg.png";
+const appShellBackgroundPhoto = "/gate-escarcha.png";
 ---
 
 <BaseLayout title="Mis XV Años — Antonella Di Maggio">
@@ -104,7 +105,7 @@ const heroBackgroundPhoto = "/bolas-bg.png";
     </section>
 
     <!-- App shell -->
-    <div class="app-shell">
+    <div class="app-shell" style={`--app-shell-bg-image: url('${appShellBackgroundPhoto}')`}>
       <!-- Countdown + ¿Quiénes están incluidos? -->
       <section id="countdown" class="countdown-wrap reveal">
         <div class="section-card countdown-card"><Countdown /></div>
@@ -248,7 +249,9 @@ const heroBackgroundPhoto = "/bolas-bg.png";
     z-index: 4;
     margin-top: 100vh;
     margin-top: 100svh;
-    background: var(--bg);
+    background-color: var(--bg);
+    background-image: var(--app-shell-bg-image, linear-gradient(135deg, #8f9b7a, #7f5d49));
+    background-position: center;
     padding: 1.35rem 0 2.8rem;
     display: grid;
     gap: 1.1rem;
@@ -804,7 +807,7 @@ const heroBackgroundPhoto = "/bolas-bg.png";
   .bolas-band {
     width: 100%;
     min-height: clamp(200px, 28vw, 360px);
-    background: url('/fotos/Bolas NDP.png') center / cover no-repeat;
+    background: url('/bolas-bg.png') center / cover no-repeat;
   }
 
   .bolas-final-section {
