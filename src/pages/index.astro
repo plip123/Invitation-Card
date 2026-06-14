@@ -104,15 +104,21 @@ const appShellBackgroundPhoto = "/gate-escarcha.png";
       </div>
     </section>
 
+    <!-- Hero → App shell transition -->
+
     <!-- App shell -->
     <div class="app-shell" style={`--app-shell-bg-image: url('${appShellBackgroundPhoto}')`}>
       <!-- Countdown + ¿Quiénes están incluidos? -->
-      <section id="countdown" class="countdown-wrap reveal">
+      <section id="countdown" class="countdown-wrap reveal section-container">
         <div class="section-card countdown-card"><Countdown /></div>
         <div class="section-card invited-card">
-          <h2>¿Quiénes están incluidos?</h2>
+          <div class="invited-heading">
+            <span class="invited-icon" aria-hidden="true">✨</span>
+            <h2>¿Quiénes están incluidos?</h2>
+          </div>
           <div id="guest-personalization" class="guest-personalization">
             <ul id="guest-invitees-list" class="guest-invitees-list"></ul>
+            <div class="guest-divider" aria-hidden="true"></div>
             <p id="guest-companions" class="guest-companions"></p>
             <p id="guest-closing" class="guest-closing"></p>
           </div>
@@ -123,7 +129,7 @@ const appShellBackgroundPhoto = "/gate-escarcha.png";
       </section>
 
       <!-- Evento banner + bloques -->
-      <section id="evento" class="reveal">
+      <section id="evento" class="reveal section-container">
         <div class="section-card section-banner">
           <span
             class="section-banner-cinta section-banner-cinta-left"
@@ -134,23 +140,24 @@ const appShellBackgroundPhoto = "/gate-escarcha.png";
             aria-hidden="true"></span>
         </div>
         <div class="event-block">
+          <div class="event-block-icon" aria-hidden="true">📅</div>
           <h3>Día</h3>
           <p>{eventDateLabel}</p>
-          <a href={calendarEventUrl} target="_blank" class="pill-btn">Agendar</a
-          >
+          <a href={calendarEventUrl} target="_blank" class="pill-btn">Agendar</a>
         </div>
         <div class="event-block">
+          <div class="event-block-icon" aria-hidden="true">📍</div>
           <h3>Lugar</h3>
           <p>{eventVenue}</p>
         </div>
         <div class="event-block">
+          <div class="event-block-icon" aria-hidden="true">🗺️</div>
           <h3>Dirección</h3>
           <p>{eventAddress}</p>
-          <a href={eventMapUrl} target="_blank" class="pill-btn"
-            >¿Cómo llegar?</a
-          >
+          <a href={eventMapUrl} target="_blank" class="pill-btn">¿Cómo llegar?</a>
         </div>
         <div class="event-block event-actions-card">
+          <div class="event-block-icon" aria-hidden="true">✉️</div>
           <h3>Acciones de la invitación</h3>
           <p>Selecciona una opción para continuar con tu confirmación.</p>
           <p id="event-actions-status" class="event-actions-status" hidden></p>
@@ -158,29 +165,27 @@ const appShellBackgroundPhoto = "/gate-escarcha.png";
             <button
               id="event-confirm-action"
               type="button"
-              class="pill-btn action-confirm">Confirmar</button
-            >
+              class="pill-btn action-confirm">Confirmar</button>
             <button
               id="event-decline-action"
               type="button"
-              class="pill-btn action-decline">No podré asistir</button
-            >
+              class="pill-btn action-decline">No podré asistir</button>
           </div>
         </div>
       </section>
 
       <!-- RSVP -->
-      <section id="confirmacion" class="reveal" hidden>
+      <section id="confirmacion" class="reveal section-container" hidden>
         <div class="section-card"><RSVP /></div>
       </section>
 
-      <section id="event-details" class="reveal"><EventDetails /></section>
+      <section id="event-details" class="reveal section-container"><EventDetails /></section>
 
       <div class="bolas-band" aria-hidden="true"></div>
 
-      <section id="songs" class="reveal"><SongRequest /></section>
+      <section id="songs" class="reveal section-container"><SongRequest /></section>
 
-      <section id="photos" class="reveal">
+      <section id="photos" class="reveal section-container">
         <div class="section-card photos-section"><QRCode /></div>
       </section>
 
@@ -188,14 +193,14 @@ const appShellBackgroundPhoto = "/gate-escarcha.png";
         <img src="/ondas05.svg" alt="" />
       </div>
 
-      <section id="gifts" class="reveal"><GiftInfo /></section>
+      <section id="gifts" class="reveal section-container"><GiftInfo /></section>
 
       <div class="section-divider section-divider-alt" aria-hidden="true">
         <img src="/lineas.svg" alt="" />
       </div>
 
       <!-- Final -->
-      <section id="final" class="reveal bolas-final-section">
+      <section id="final" class="reveal bolas-final-section section-container">
         <div class="section-card final-actions bolas-final-card">
           <div class="final-icons" aria-hidden="true">
             <img
@@ -269,6 +274,61 @@ const appShellBackgroundPhoto = "/gate-escarcha.png";
   .app-shell,
   .app-shell * {
     min-width: 0;
+  }
+
+  /* ── Section container (unified padding) ─────────────── */
+  .section-container {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  /* ── Invited card heading ────────────────────────────── */
+  .invited-heading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.55rem;
+    margin-bottom: 0.35rem;
+  }
+  .invited-icon {
+    font-size: 1.6rem;
+    line-height: 1;
+    filter: drop-shadow(0 0 8px rgba(212, 175, 55, 0.35));
+    animation: icon-float 4.8s ease-in-out infinite;
+  }
+
+  /* ── Guest divider ───────────────────────────────────── */
+  .guest-divider {
+    width: 64px;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--primary), transparent);
+    margin: 0.55rem auto;
+    border-radius: 1px;
+    opacity: 0.6;
+  }
+
+  /* ── Event block icon ──────────────────────────────────── */
+  .event-block-icon {
+    font-size: 1.9rem;
+    line-height: 1;
+    margin-bottom: 0.35rem;
+    filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.25));
+    display: block;
+  }
+
+  /* ── Hero to app-shell transition ──────────────────────── */
+  .hero-to-app-transition {
+    position: relative;
+    z-index: 3;
+    height: clamp(60px, 10vw, 120px);
+    margin-top: -1px;
+    background: linear-gradient(
+      to bottom,
+      rgba(0, 0, 0, 0.55) 0%,
+      rgba(0, 0, 0, 0.25) 40%,
+      var(--bg) 100%
+    );
+    pointer-events: none;
   }
 
   /* ── Reveal animation ──────────────────────────────────── */
@@ -971,12 +1031,7 @@ const appShellBackgroundPhoto = "/gate-escarcha.png";
     padding: 0.55rem 0;
   }
 
-  #countdown,
-  #evento,
-  #event-details,
-  #songs,
-  #gifts,
-  #final {
+  .section-container {
     padding-left: 1rem;
     padding-right: 1rem;
   }
@@ -1116,13 +1171,7 @@ const appShellBackgroundPhoto = "/gate-escarcha.png";
       padding-top: 1rem;
       gap: 0.95rem;
     }
-    #countdown,
-    #evento,
-    #event-details,
-    #confirmacion,
-    #songs,
-    #gifts,
-    #final {
+    .section-container {
       padding-left: 1.1rem;
       padding-right: 1.1rem;
     }
@@ -1143,12 +1192,7 @@ const appShellBackgroundPhoto = "/gate-escarcha.png";
     .invited-card {
       height: 100%;
     }
-    #countdown,
-    #evento,
-    #event-details,
-    #songs,
-    #gifts,
-    #final {
+    .section-container {
       padding-left: 2.3rem;
       padding-right: 2.3rem;
     }
@@ -1235,12 +1279,7 @@ const appShellBackgroundPhoto = "/gate-escarcha.png";
     section.reveal {
       padding: 0.42rem 0;
     }
-    #countdown,
-    #evento,
-    #event-details,
-    #songs,
-    #gifts,
-    #final {
+    .section-container {
       padding-left: 0.5rem;
       padding-right: 0.5rem;
     }
@@ -1516,18 +1555,29 @@ const appShellBackgroundPhoto = "/gate-escarcha.png";
 
     setPaused();
 
-    // La música debe comenzar desde el segundo 7 la primera vez que suena.
+    // La música debe comenzar desde el segundo 35 la primera vez que suena.
+    const INTRO_START = 7;
     let introStartDone = false;
+    const seekToIntro = () => {
+      try {
+        if (
+          !Number.isFinite(backgroundAudio.duration) ||
+          backgroundAudio.duration > INTRO_START
+        ) {
+          backgroundAudio.currentTime = INTRO_START;
+        }
+      } catch {}
+    };
+    // Se llama justo después de que play() arranca: en ese momento el audio
+    // ya está listo para buscar. Si aún no, se reintenta en "canplay".
     const startFromIntro = () => {
       if (introStartDone) return;
       introStartDone = true;
-      const seek = () => {
-        try {
-          backgroundAudio.currentTime = 7;
-        } catch {}
-      };
-      if (backgroundAudio.readyState >= 1) seek();
-      else backgroundAudio.addEventListener("loadedmetadata", seek, { once: true });
+      if (backgroundAudio.readyState >= 1) seekToIntro();
+      else
+        backgroundAudio.addEventListener("canplay", seekToIntro, {
+          once: true,
+        });
     };
 
     document.documentElement.style.overflow = "hidden";
@@ -1537,8 +1587,8 @@ const appShellBackgroundPhoto = "/gate-escarcha.png";
       if (withMusic) {
         try {
           backgroundAudio.muted = false;
-          startFromIntro();
           await backgroundAudio.play();
+          startFromIntro();
           setPlaying();
         } catch {
           setPaused();
@@ -1558,8 +1608,8 @@ const appShellBackgroundPhoto = "/gate-escarcha.png";
     musicFab.addEventListener("click", async () => {
       if (backgroundAudio.paused) {
         try {
-          startFromIntro();
           await backgroundAudio.play();
+          startFromIntro();
           setPlaying();
         } catch {
           setPaused();
