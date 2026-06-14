@@ -37,7 +37,7 @@ const calendarEventUrl =
   "https://calendar.google.com/calendar/render?" + calParams.toString();
 
 // Hero photo
-const heroBackgroundPhoto = "/fotos/Bolas P.png";
+const heroBackgroundPhoto = "/bolas-bg.png";
 ---
 
 <BaseLayout title="Mis XV Años — Antonella Di Maggio">
@@ -90,36 +90,21 @@ const heroBackgroundPhoto = "/fotos/Bolas P.png";
           </div>
           <h1 class="hero-names" aria-label="Antonella Di Maggio">
             <span class="hero-name">Antonella</span>
+            <span class="hero-name">Di Maggio</span>
           </h1>
           <span class="hero-names-line" aria-hidden="true"></span>
           <div class="hero-quote-wrap">
-            <img
-              src="/comilla_apertura.svg"
-              alt=""
-              class="hero-quote-mark hero-quote-open"
-            />
-            <p class="hero-quote">
-              Mis XV años
-            </p>
-            <img
-              src="/comilla_cierre.svg"
-              alt=""
-              class="hero-quote-mark hero-quote-close"
-            />
+            <p class="hero-quote">"Te invito a mis XV años"</p>
           </div>
-          <div class="hero-scroll" aria-hidden="true">
-            <img src="/flecha_continuar.svg" alt="" />
-          </div>
+        </div>
+        <div class="hero-scroll" aria-hidden="true">
+          <img src="/flecha_continuar.svg" alt="" />
         </div>
       </div>
     </section>
 
     <!-- App shell -->
     <div class="app-shell">
-      <div class="section-divider" aria-hidden="true">
-        <img src="/ondas02.svg" alt="" />
-      </div>
-
       <!-- Countdown + ¿Quiénes están incluidos? -->
       <section id="countdown" class="countdown-wrap reveal">
         <div class="section-card countdown-card"><Countdown /></div>
@@ -334,9 +319,8 @@ const heroBackgroundPhoto = "/fotos/Bolas P.png";
     height: 100vh;
     height: 100svh;
     border-radius: 0;
-    background:
-      linear-gradient(180deg, rgba(0, 0, 0, 0.25), rgba(0, 0, 0, 0.65)),
-      var(--hero-bg-image, linear-gradient(135deg, #8f9b7a, #7f5d49));
+    background-color: #0a0a0c;
+    background-image: var(--hero-bg-image, linear-gradient(135deg, #8f9b7a, #7f5d49));
     background-position: center;
     background-size: cover;
     display: flex;
@@ -375,16 +359,19 @@ const heroBackgroundPhoto = "/fotos/Bolas P.png";
   }
 
   .hero-overlay {
+    width: 100%;
+    padding: 2.8rem 1.5rem;
+    background: rgba(0, 0, 0, 0.56);
+    backdrop-filter: blur(2px);
+    -webkit-backdrop-filter: blur(2px);
     text-align: center;
     color: #fff;
-    width: min(620px, 92vw);
-    min-height: 100%;
-    padding: 4.3rem 1.3rem 1rem;
     position: relative;
     z-index: 2;
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    align-items: center;
+    gap: 0;
   }
 
   .hero-date-row {
@@ -403,11 +390,11 @@ const heroBackgroundPhoto = "/fotos/Bolas P.png";
   }
 
   .hero-date {
-    letter-spacing: 0.09em;
-    font-size: 0.95rem;
+    letter-spacing: 0.5em;
+    font-size: 0.88rem;
     text-transform: uppercase;
-    opacity: 0.94;
-    color: var(--primary);
+    opacity: 0.88;
+    color: #fff;
     margin: 0;
   }
 
@@ -424,10 +411,10 @@ const heroBackgroundPhoto = "/fotos/Bolas P.png";
 
   .hero-name {
     display: block;
-    font-size: clamp(4.5rem, 12vw, 9rem);
+    font-size: clamp(3rem, 8.5vw, 6.5rem);
     font-weight: 400;
     font-family: var(--font-script);
-    line-height: 0.95;
+    line-height: 0.98;
   }
 
   .hero-amp {
@@ -435,58 +422,44 @@ const heroBackgroundPhoto = "/fotos/Bolas P.png";
   }
 
   .hero-names-line {
-    width: min(320px, 60%);
+    width: min(480px, 78%);
     height: 1px;
-    background: rgba(242, 245, 247, 0.72);
-    margin: 0 auto 0.95rem;
+    background: rgba(242, 245, 247, 0.65);
+    margin: 0.85rem auto 1.1rem;
     display: block;
   }
 
   .hero-quote-wrap {
-    display: grid;
-    justify-items: center;
-    gap: 0.2rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 
   .hero-quote {
-    max-width: 500px;
+    max-width: 520px;
     margin: 0;
-    color: #f4f6f7;
-    font-size: 1.03rem;
+    color: rgba(255, 255, 255, 0.90);
+    font-size: 1.05rem;
+    font-family: 'Inria Serif', Georgia, serif;
+    font-style: italic;
     line-height: 1.35;
-  }
-
-  .hero-quote-mark {
-    width: 18px;
-    height: 18px;
-    opacity: 0.95;
-    will-change: transform;
-  }
-
-  .hero-quote-open {
-    margin-bottom: 0.15rem;
-    animation: quote-mark-drift 3.6s ease-in-out infinite;
-  }
-
-  .hero-quote-close {
-    margin-top: 0.15rem;
-    animation: quote-mark-drift 3.6s ease-in-out infinite reverse;
   }
 
   .hero-scroll {
     position: absolute;
     left: 50%;
-    bottom: 0.65rem;
+    bottom: 1rem;
     transform: translateX(-50%);
     display: grid;
     justify-items: center;
+    z-index: 3;
     animation: bounce 2.2s infinite;
   }
 
   .hero-scroll img {
     width: 24px;
     height: 24px;
-    opacity: 0.92;
+    opacity: 0.82;
   }
 
   /* ── Welcome gate ──────────────────────────────────────── */
@@ -1139,8 +1112,7 @@ const heroBackgroundPhoto = "/fotos/Bolas P.png";
       border-radius: 0;
     }
     .hero-overlay {
-      width: min(420px, 88vw);
-      padding: 4.9rem 1rem 0.9rem;
+      padding: 2.2rem 1rem;
     }
     .hero-ornament-top {
       top: -24px;
@@ -1167,7 +1139,7 @@ const heroBackgroundPhoto = "/fotos/Bolas P.png";
       right: -22px;
     }
     .hero-name {
-      font-size: clamp(2.8rem, 14.2vw, 4.2rem);
+      font-size: clamp(2.4rem, 10vw, 3.5rem);
     }
     .hero-amp {
       width: 48px;
@@ -1240,11 +1212,10 @@ const heroBackgroundPhoto = "/fotos/Bolas P.png";
       padding-bottom: 2rem;
     }
     .hero-overlay {
-      width: min(360px, 92vw);
-      padding: 4.2rem 0.8rem 0.9rem;
+      padding: 2rem 1rem;
     }
     .hero-name {
-      font-size: clamp(2.35rem, 14vw, 3.2rem);
+      font-size: clamp(2rem, 11vw, 2.8rem);
     }
     .hero-quote {
       font-size: 1rem;
@@ -1281,8 +1252,6 @@ const heroBackgroundPhoto = "/fotos/Bolas P.png";
   @media (prefers-reduced-motion: reduce) {
     .hero-ornament-top,
     .hero-ornament-bottom,
-    .hero-quote-open,
-    .hero-quote-close,
     .section-divider img,
     .final-heart,
     .final-cinta-left,
