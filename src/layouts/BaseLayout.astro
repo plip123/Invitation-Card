@@ -11,12 +11,12 @@ const { title, skipPrivacyGate = false } = Astro.props;
 <html lang="es">
   <head>
     <meta charset="UTF-8" />
-    <meta name="description" content="Invitación XV Años — Antonella Di Maggio" />
+    <meta name="description" content="Invitación de boda — Demo" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Great+Vibes&family=Inria+Serif:ital@0;1&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Great+Vibes&display=swap"
       rel="stylesheet"
     />
     <link rel="icon" type="image/svg+xml" href="/favicon-rings.svg" />
@@ -30,7 +30,6 @@ const { title, skipPrivacyGate = false } = Astro.props;
       ) : (
         <>
           <main id="privacy-gate" class="privacy-gate-main">
-            <img src="/gate-sello-a.png" alt="" class="privacy-gate-seal" aria-hidden="true" />
             <section class="privacy-gate-card" aria-label="Acceso privado">
               <h1>Acceso privado</h1>
               <p>Ingresa el código de tu invitación para continuar.</p>
@@ -49,8 +48,6 @@ const { title, skipPrivacyGate = false } = Astro.props;
                 El código no es válido. Revisa el enlace de tu invitación.
               </p>
             </section>
-            <img src="/gate-bolas-disco.png" alt="" class="privacy-gate-disco" aria-hidden="true" />
-            <img src="/gate-ribbons.svg" alt="" class="privacy-gate-ribbons" aria-hidden="true" />
           </main>
           <div id="privacy-app-content" hidden>
             <slot />
@@ -161,22 +158,21 @@ const { title, skipPrivacyGate = false } = Astro.props;
   }
 
   :root {
-    --bg: #BFA074;
-    --surface: #755E28;
-    --surface-soft: #BFA074;
-    --text: #FFFFFF;
-    --muted: #D4C4A8;
-    --line: #BFA074;
-    --primary: #D4AF37;
-    --primary-soft: #1F1A0A;
-    --success: #5A8A6E;
-    --success-soft: #2A3A2E;
-    --danger: #C0504D;
-    --danger-soft: #3A1A1A;
+    --bg: #f8f3eb;
+    --surface: #fcf8f1;
+    --surface-soft: #f4ede2;
+    --text: #3f332d;
+    --title: #3f332d;
+    --muted: #77665c;
+    --line: #dfd2c1;
+    --primary: #6f8765;
+    --primary-soft: #edf3ea;
+    --success: #5a8d71;
+    --danger: #b35b5b;
     --radius-lg: 18px;
     --radius-md: 12px;
-    --shadow-sm: 0 10px 24px rgba(0, 0, 0, 0.35);
-    --shadow-md: 0 22px 40px rgba(0, 0, 0, 0.50);
+    --shadow-sm: 0 10px 24px rgba(95, 72, 54, 0.08);
+    --shadow-md: 0 22px 40px rgba(95, 72, 54, 0.12);
     --font-body: "Cormorant Garamond", Georgia, serif;
     --font-script: "Great Vibes", cursive;
   }
@@ -198,81 +194,32 @@ const { title, skipPrivacyGate = false } = Astro.props;
 
   .privacy-gate-main {
     min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
+    display: grid;
+    place-items: center;
     padding: 1rem;
-    background-color: var(--surface);
-    background-image: url('/gate-escarcha.png');
-    background-size: cover;
-    background-position: center;
-    position: relative;
-    overflow: hidden;
   }
 
   .privacy-gate-main[hidden] {
     display: none;
   }
 
-  .privacy-gate-ribbons {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    pointer-events: none;
-    z-index: 0;
-  }
-
-  .privacy-gate-seal {
-    width: 160px;
-    height: 160px;
-    object-fit: contain;
-    display: block;
-    margin-bottom: -20px;
-    position: absolute;
-    top: 55%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    top: 25%;
-    z-index: 2;
-    pointer-events: none;
-    filter: drop-shadow(0 4px 12px rgba(0,0,0,0.4));
-  }
-
   .privacy-gate-card {
     width: min(100%, 440px);
     background: var(--surface);
-    border: 1px solid rgba(212, 175, 55, 0.5);
-    border-radius: 20px;
-    box-shadow: 0 24px 48px rgba(0,0,0,0.5);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
     padding: 1.6rem 1.4rem;
     text-align: center;
-    position: relative;
-    z-index: 2;
   }
 
   .privacy-gate-card h1 {
     font-size: 2rem;
     margin-bottom: 0.5rem;
-    color: var(--text);
   }
 
   .privacy-gate-card > p {
     margin-bottom: 0.75rem;
-    color: var(--muted);
-  }
-
-  .demo-hint {
-    background: rgba(0,0,0,0.3);
-    border: 1px solid rgba(212,175,55,0.3);
-    border-radius: 8px;
-    padding: 0.6rem 0.9rem;
-    font-size: 1.05rem;
-    color: var(--primary);
-    margin-bottom: 1rem !important;
-    text-align: left;
   }
 
   .privacy-gate-form {
@@ -282,41 +229,13 @@ const { title, skipPrivacyGate = false } = Astro.props;
 
   .privacy-gate-form input {
     margin-bottom: 0;
-    border-radius: 16px;
-    background: rgba(31, 26, 10, 0.6);
-    border: 1px solid var(--line);
-    color: var(--text);
-  }
-
-  .privacy-gate-form input::placeholder {
-    color: #A09070;
-    opacity: 1;
-  }
-
-  .privacy-gate-form input:focus {
-    background: rgba(31, 26, 10, 0.8);
-    border-color: var(--primary);
-    box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.18);
   }
 
   .privacy-gate-error {
-    color: #ffb3b0;
+    color: var(--danger);
     margin-top: 0.75rem;
     margin-bottom: 0;
     font-size: 1.05rem;
-  }
-
-  .privacy-gate-disco {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: clamp(120px, 18vw, 220px);
-    object-fit: cover;
-    object-position: center bottom;
-    pointer-events: none;
-    z-index: 1;
-    opacity: 0.95;
   }
 
   section {
@@ -373,12 +292,12 @@ const { title, skipPrivacyGate = false } = Astro.props;
   }
 
   button:hover {
-    background: #1F1A0A;
+    background: #f3ebdf;
     transform: translateY(-1px);
   }
 
   button:disabled {
-    background: #222226;
+    background: #eceae6;
     cursor: not-allowed;
   }
 
@@ -388,32 +307,21 @@ const { title, skipPrivacyGate = false } = Astro.props;
     padding: 0.75rem;
     margin-bottom: 1rem;
     border: 1px solid var(--line);
-    background: rgba(31, 26, 10, 0.6);
+    background: var(--bg);
     border-radius: 5px;
     font-size: 1.16rem;
     font-family: inherit;
     color: var(--text);
   }
 
-  input::placeholder,
-  textarea::placeholder {
-    color: #A09070;
-    opacity: 1;
-  }
-
   input:focus,
   textarea:focus {
     outline: none;
-    border-color: var(--primary);
-    box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.18);
-    background: rgba(31, 26, 10, 0.8);
+    border-color: #a8baa0;
+    box-shadow: 0 0 0 3px rgba(111, 135, 101, 0.16);
   }
 
   @media (max-width: 768px) {
-    :root {
-      --bg: transparent;
-    }
-
     section {
       padding: 0;
     }
@@ -433,9 +341,5 @@ const { title, skipPrivacyGate = false } = Astro.props;
     p {
       font-size: 1.12rem;
     }
-  }
-
-  .section-heading-icon, .detail-icon, .gift-heading-icon, .song-heading-icon, .qr-heading-icon {
-    filter: brightness(0) invert(0.85);
   }
 </style>

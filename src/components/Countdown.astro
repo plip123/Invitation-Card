@@ -1,10 +1,10 @@
 ---
 // Demo: fecha futura genérica — 6 meses desde hoy aprox.
-const weddingDate = "2026-08-15T19:00:00";
+const weddingDate = "2027-09-12T17:00:00";
 ---
 
 <div class="countdown-container" data-wedding-date={weddingDate}>
-  <p class="countdown-kicker">Para mis XV años</p>
+  <p class="countdown-kicker">Para nuestra boda</p>
   <h2>Cuenta regresiva</h2>
   <div class="countdown" id="countdown">
     <div class="time-unit">
@@ -43,7 +43,7 @@ const weddingDate = "2026-08-15T19:00:00";
   .countdown-container::after {
     content: "❦";
     position: absolute;
-    color: var(--primary);
+    color: #8f7e6d;
     opacity: 0.28;
     font-size: 1.25rem;
   }
@@ -106,12 +106,6 @@ const weddingDate = "2026-08-15T19:00:00";
     display: block;
     min-width: 2ch;
     text-align: center;
-    text-shadow: 0 0 20px rgba(212, 175, 55, 0.15);
-    transition: transform 0.3s ease, text-shadow 0.3s ease;
-  }
-
-  .number.changed {
-    animation: number-pop 0.4s cubic-bezier(0.22, 1, 0.36, 1);
   }
 
   .label {
@@ -121,21 +115,6 @@ const weddingDate = "2026-08-15T19:00:00";
     color: var(--muted);
     margin-top: 0.3rem;
     display: block;
-  }
-
-  @keyframes number-pop {
-    0% {
-      transform: scale(1);
-      text-shadow: 0 0 20px rgba(212, 175, 55, 0.15);
-    }
-    50% {
-      transform: scale(1.08);
-      text-shadow: 0 0 30px rgba(212, 175, 55, 0.35);
-    }
-    100% {
-      transform: scale(1);
-      text-shadow: 0 0 20px rgba(212, 175, 55, 0.15);
-    }
   }
 
   @media (max-width: 540px) {

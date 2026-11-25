@@ -83,23 +83,6 @@
     color: var(--muted);
   }
 
-  .form-group input {
-    background: rgba(31, 26, 10, 0.6);
-    border: 1px solid var(--line);
-    color: var(--text);
-  }
-
-  .form-group input::placeholder {
-    color: #A09070;
-    opacity: 1;
-  }
-
-  .form-group input:focus {
-    background: rgba(31, 26, 10, 0.8);
-    border-color: var(--primary);
-    box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.18);
-  }
-
   .button-group {
     display: flex;
     gap: 1rem;
@@ -114,25 +97,21 @@
   .btn-confirm {
     background: var(--success);
     color: #fff;
-    border-color: var(--success);
+    border-color: #2c855d;
   }
 
   .btn-confirm:hover {
-    background: #4A7A5A;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(90, 138, 110, 0.3);
+    background: #3e7a5e;
   }
 
   .btn-decline {
     background: var(--danger);
     color: #fff;
-    border-color: var(--danger);
+    border-color: #a54242;
   }
 
   .btn-decline:hover {
-    background: #A04040;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(192, 80, 77, 0.3);
+    background: #a54242;
   }
 
   .message {
@@ -145,16 +124,16 @@
   }
 
   .message.success {
-    background: var(--success-soft);
-    color: #8BC4A0;
-    border: 1px solid var(--success);
+    background: var(--primary-soft);
+    color: var(--primary);
+    border: 1px solid #c6d8bf;
     display: block;
   }
 
   .message.error {
-    background: var(--danger-soft);
-    color: #E8A0A0;
-    border: 1px solid var(--danger);
+    background: #f8eaea;
+    color: var(--danger);
+    border: 1px solid #e0b0b0;
     display: block;
   }
 

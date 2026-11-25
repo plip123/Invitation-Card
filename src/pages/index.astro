@@ -8,12 +8,12 @@ import QRCode from "../components/QRCode.astro";
 import RSVP from "../components/RSVP.astro";
 
 // ── Demo data — no personal info ──────────────────────────────────────────────
-const eventTitle = "Mis XV Años";
-const calendarTitle = "XV de Antonella Di Maggio";
-const eventDateLabel = "Sábado 15 de Agosto — 7:00 PM";
-const eventVenue = "Club Táchira Tennis";
-const eventAddress = "Calle Caurimare, Colinas de Bello Monte, Caracas";
-const eventMapUrl = "https://maps.app.goo.gl/rBiZDSEwmK2ecxRo8";
+const eventTitle = "Boda Civil";
+const calendarTitle = "Boda de Sofía y Mateo";
+const eventDateLabel = "Domingo 12 de Septiembre — 05:00 PM a 11:00 PM";
+const eventVenue = "Salón Jardín Las Magnolias";
+const eventAddress = "Urbanización Los Pinos, Calle Principal";
+const eventMapUrl = "https://maps.google.com";
 
 const formatGcal = (d: Date) =>
   d
@@ -21,8 +21,8 @@ const formatGcal = (d: Date) =>
     .replace(/[-:]/g, "")
     .replace(/\.\d{3}Z$/, "Z");
 
-const s = new Date("2026-08-15T19:00:00-04:00");
-const e = new Date("2026-08-15T23:00:00-04:00");
+const s = new Date("2027-09-12T17:00:00-04:00");
+const e = new Date("2027-09-12T23:00:00-04:00");
 const calDates = formatGcal(s) + "/" + formatGcal(e);
 const calDetails = eventDateLabel + ". Lugar: " + eventVenue + ".";
 const calLocation = eventVenue + ", " + eventAddress;
@@ -36,16 +36,20 @@ const calParams = new URLSearchParams({
 const calendarEventUrl =
   "https://calendar.google.com/calendar/render?" + calParams.toString();
 
-// Hero photo
-const heroBackgroundPhoto = "/bolas-bg.png";
-const appShellBackgroundPhoto = "/gate-escarcha.png";
+// Hero & gallery photos
+const heroBackgroundPhoto = "/fotos/portada.jpg";
+const galleryPhotos = [1, 2, 3, 4].map((n) => ({
+  src: `/fotos/${n}.jpg`,
+  alt: `Foto ${n}`,
+}));
+// Duplicar una vez en HTML para el loop CSS infinito (4 archivos únicos, 8 nodos)
+const marqueePhotos = [...galleryPhotos, ...galleryPhotos];
 ---
 
-<BaseLayout title="Mis XV Años — Antonella Di Maggio">
+<BaseLayout title="Invitación de Boda — Demo">
   <main>
     <!-- Welcome gate (music) -->
     <section id="welcome-gate" class="welcome-gate" aria-modal="true">
-      <img src="/gate-sello-a.png" alt="" class="welcome-gate-seal" aria-hidden="true" />
       <div class="welcome-card">
         <h2>Bienvenido</h2>
         <p>¿Cómo quieres ingresar a la invitación?</p>
@@ -58,8 +62,6 @@ const appShellBackgroundPhoto = "/gate-escarcha.png";
           </button>
         </div>
       </div>
-      <img src="/gate-bolas-disco.png" alt="" class="welcome-gate-disco" aria-hidden="true" />
-      <img src="/gate-ribbons.svg" alt="" class="welcome-gate-ribbons" aria-hidden="true" />
     </section>
 
     <!-- Music FAB -->
@@ -83,42 +85,63 @@ const appShellBackgroundPhoto = "/gate-escarcha.png";
         class="hero-image-placeholder"
         style={`--hero-bg-image: url('${heroBackgroundPhoto}')`}
       >
+        <img
+          src="/hojas_portada_izquierda_superior.svg"
+          alt=""
+          class="hero-ornament hero-ornament-top"
+        />
+        <img
+          src="/hojas_portada_derecha_inferior.svg"
+          alt=""
+          class="hero-ornament hero-ornament-bottom"
+        />
         <div class="hero-overlay">
           <div class="hero-date-row">
             <span class="hero-line" aria-hidden="true"></span>
-            <p class="hero-date">15.08.2026</p>
+            <p class="hero-date">12.09.2027</p>
             <span class="hero-line" aria-hidden="true"></span>
           </div>
-          <h1 class="hero-names" aria-label="Antonella Di Maggio">
-            <span class="hero-name">Antonella</span>
-            <span class="hero-name">Di Maggio</span>
+          <h1 class="hero-names" aria-label="Sofía y Mateo">
+            <span class="hero-name">Sofía</span>
+            <span class="hero-amp">&</span>
+            <span class="hero-name">Mateo</span>
           </h1>
           <span class="hero-names-line" aria-hidden="true"></span>
           <div class="hero-quote-wrap">
-            <p class="hero-quote">"Te invito a mis XV años"</p>
+            <img
+              src="/comilla_apertura.svg"
+              alt=""
+              class="hero-quote-mark hero-quote-open"
+            />
+            <p class="hero-quote">
+              El amor no se ve con los ojos, sino con el corazón.
+            </p>
+            <img
+              src="/comilla_cierre.svg"
+              alt=""
+              class="hero-quote-mark hero-quote-close"
+            />
           </div>
-        </div>
-        <div class="hero-scroll" aria-hidden="true">
-          <img src="/flecha_continuar.svg" alt="" />
+          <div class="hero-scroll" aria-hidden="true">
+            <img src="/flecha_continuar.svg" alt="" />
+          </div>
         </div>
       </div>
     </section>
 
-    <!-- Hero → App shell transition -->
-
     <!-- App shell -->
-    <div class="app-shell" style={`--app-shell-bg-image: url('${appShellBackgroundPhoto}')`}>
+    <div class="app-shell">
+      <div class="section-divider" aria-hidden="true">
+        <img src="/ondas02.svg" alt="" />
+      </div>
+
       <!-- Countdown + ¿Quiénes están incluidos? -->
       <section id="countdown" class="countdown-wrap reveal section-container">
         <div class="section-card countdown-card"><Countdown /></div>
         <div class="section-card invited-card">
-          <div class="invited-heading">
-            <span class="invited-icon" aria-hidden="true">✨</span>
-            <h2>¿Quiénes están incluidos?</h2>
-          </div>
+          <h2>¿Quiénes están incluidos?</h2>
           <div id="guest-personalization" class="guest-personalization">
             <ul id="guest-invitees-list" class="guest-invitees-list"></ul>
-            <div class="guest-divider" aria-hidden="true"></div>
             <p id="guest-companions" class="guest-companions"></p>
             <p id="guest-closing" class="guest-closing"></p>
           </div>
@@ -140,26 +163,23 @@ const appShellBackgroundPhoto = "/gate-escarcha.png";
             aria-hidden="true"></span>
         </div>
         <div class="event-block">
-          <div class="event-block-icon" aria-hidden="true">
-            <img src="/calendar-icon.png" alt="" class="event-block-icon-img" />
-          </div>
           <h3>Día</h3>
           <p>{eventDateLabel}</p>
-          <a href={calendarEventUrl} target="_blank" class="pill-btn">Agendar</a>
+          <a href={calendarEventUrl} target="_blank" class="pill-btn">Agendar</a
+          >
         </div>
         <div class="event-block">
-          <div class="event-block-icon" aria-hidden="true">📍</div>
           <h3>Lugar</h3>
           <p>{eventVenue}</p>
         </div>
         <div class="event-block">
-          <div class="event-block-icon" aria-hidden="true">🗺️</div>
           <h3>Dirección</h3>
           <p>{eventAddress}</p>
-          <a href={eventMapUrl} target="_blank" class="pill-btn">¿Cómo llegar?</a>
+          <a href={eventMapUrl} target="_blank" class="pill-btn"
+            >¿Cómo llegar?</a
+          >
         </div>
         <div class="event-block event-actions-card">
-          <div class="event-block-icon" aria-hidden="true">✉️</div>
           <h3>Acciones de la invitación</h3>
           <p>Selecciona una opción para continuar con tu confirmación.</p>
           <p id="event-actions-status" class="event-actions-status" hidden></p>
@@ -167,11 +187,13 @@ const appShellBackgroundPhoto = "/gate-escarcha.png";
             <button
               id="event-confirm-action"
               type="button"
-              class="pill-btn action-confirm">Confirmar</button>
+              class="pill-btn action-confirm">Confirmar</button
+            >
             <button
               id="event-decline-action"
               type="button"
-              class="pill-btn action-decline">No podré asistir</button>
+              class="pill-btn action-decline">No podré asistir</button
+            >
           </div>
         </div>
       </section>
@@ -181,10 +203,40 @@ const appShellBackgroundPhoto = "/gate-escarcha.png";
         <div class="section-card"><RSVP /></div>
       </section>
 
+      <div class="section-divider" aria-hidden="true">
+        <img src="/ondas04.svg" alt="" />
+      </div>
+
+      <!-- Gallery -->
+      <section id="galeria" class="reveal section-container">
+        <div class="section-card">
+          <h2>Retratos de Nuestro Amor</h2>
+          <div class="gallery-quote-wrap">
+            <span
+              class="gallery-quote-mark gallery-quote-open"
+              aria-hidden="true"></span>
+            <p class="gallery-quote">
+              Me has hechizado en cuerpo y alma, y te amo, te amo, te amo.
+            </p>
+            <span
+              class="gallery-quote-mark gallery-quote-close"
+              aria-hidden="true"></span>
+          </div>
+          <div class="gallery-carousel" role="list" aria-label="Galería demo">
+            <div class="gallery-track">
+              {
+                marqueePhotos.map((photo, index) => (
+                  <figure class="gallery-photo" role="listitem">
+                    <img src={photo.src} alt={photo.alt} loading="eager" />
+                  </figure>
+                ))
+              }
+            </div>
+          </div>
+        </div>
+      </section>
+
       <section id="event-details" class="reveal section-container"><EventDetails /></section>
-
-      <div class="bolas-band" aria-hidden="true"></div>
-
       <section id="songs" class="reveal section-container"><SongRequest /></section>
 
       <section id="photos" class="reveal section-container">
@@ -202,32 +254,25 @@ const appShellBackgroundPhoto = "/gate-escarcha.png";
       </div>
 
       <!-- Final -->
-      <section id="final" class="reveal bolas-final-section section-container">
-        <div class="section-card final-actions bolas-final-card">
+      <section id="final" class="reveal section-container">
+        <div class="section-card final-actions">
           <div class="final-icons" aria-hidden="true">
             <img
               class="final-cinta final-cinta-left"
               src="/cinta_izquierda.svg"
               alt=""
-              style="filter: brightness(0) saturate(100%) invert(72%) sepia(57%) saturate(400%) hue-rotate(5deg) brightness(95%)"
             />
-            <img
-              class="final-heart"
-              src="/corazon.svg"
-              alt=""
-              style="filter: brightness(0) saturate(100%) invert(72%) sepia(57%) saturate(400%) hue-rotate(5deg) brightness(95%)"
-            />
+            <img class="final-heart" src="/corazon.svg" alt="" />
             <img
               class="final-cinta final-cinta-right"
               src="/cinta_derecha.svg"
               alt=""
-              style="filter: brightness(0) saturate(100%) invert(72%) sepia(57%) saturate(400%) hue-rotate(5deg) brightness(95%)"
             />
           </div>
-          <h2>Antonella Di Maggio</h2>
+          <h2>Sofía &amp; Mateo</h2>
           <p>
-            Gracias por ser parte de este momento tan especial en mi vida.
-            ¡Te espero con todo el cariño del mundo!
+            Gracias por acompañarnos en este capítulo tan importante de nuestra
+            historia.
           </p>
         </div>
       </section>
@@ -256,13 +301,11 @@ const appShellBackgroundPhoto = "/gate-escarcha.png";
     z-index: 4;
     margin-top: 100vh;
     margin-top: 100svh;
-    background-color: var(--bg);
-    background-image: var(--app-shell-bg-image, linear-gradient(135deg, #8f9b7a, #7f5d49));
-    background-position: center;
+    background: var(--bg);
     padding: 1.35rem 0 2.8rem;
     display: grid;
     gap: 1.1rem;
-    box-shadow: 0 -14px 30px rgba(0, 0, 0, 0.40);
+    box-shadow: 0 -14px 30px rgba(56, 40, 28, 0.12);
   }
 
   .app-shell > section,
@@ -278,109 +321,17 @@ const appShellBackgroundPhoto = "/gate-escarcha.png";
     min-width: 0;
   }
 
-  /* ── Section container (unified padding) ─────────────── */
-  .section-container {
-    padding-left: 1rem;
-    padding-right: 1rem;
-  }
-
-  /* ── Invited card heading ────────────────────────────── */
-  .invited-heading {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.55rem;
-    margin-bottom: 0.35rem;
-  }
-  .invited-icon {
-    font-size: 1.6rem;
-    line-height: 1;
-    filter: drop-shadow(0 0 8px rgba(212, 175, 55, 0.35));
-    animation: icon-float 4.8s ease-in-out infinite;
-  }
-
-  /* ── Guest divider ───────────────────────────────────── */
-  .guest-divider {
-    width: 64px;
-    height: 2px;
-    background: linear-gradient(90deg, transparent, var(--primary), transparent);
-    margin: 0.55rem auto;
-    border-radius: 1px;
-    opacity: 0.6;
-  }
-
-  /* ── Event block icon ──────────────────────────────────── */
-  .event-block-icon {
-    font-size: 1.9rem;
-    line-height: 1;
-    margin-bottom: 0.35rem;
-    filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.25));
-    display: block;
-  }
-
-  .event-block-icon-img {
-    display: inline-block;
-    width: 1.9rem;
-    height: 1.9rem;
-    object-fit: contain;
-    vertical-align: middle;
-  }
-
-  /* ── Hero to app-shell transition ──────────────────────── */
-  .hero-to-app-transition {
-    position: relative;
-    z-index: 3;
-    height: clamp(60px, 10vw, 120px);
-    margin-top: -1px;
-    background: linear-gradient(
-      to bottom,
-      rgba(0, 0, 0, 0.55) 0%,
-      rgba(0, 0, 0, 0.25) 40%,
-      var(--bg) 100%
-    );
-    pointer-events: none;
-  }
-
   /* ── Reveal animation ──────────────────────────────────── */
   .reveal {
     opacity: 0;
-    transform: translateY(28px) scale(0.98);
+    transform: translateY(24px);
     transition:
-      opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1),
-      transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+      opacity 0.65s ease,
+      transform 0.65s ease;
   }
   .reveal.is-visible {
     opacity: 1;
-    transform: translateY(0) scale(1);
-  }
-
-  /* Staggered reveal delays for children */
-  .reveal.is-visible .section-card,
-  .reveal.is-visible .event-block {
-    opacity: 0;
-    transform: translateY(16px);
-    animation: card-enter 0.6s cubic-bezier(0.22, 1, 0.36, 1) forwards;
-  }
-  .reveal.is-visible .section-card:nth-child(1),
-  .reveal.is-visible .event-block:nth-child(1) { animation-delay: 0.1s; }
-  .reveal.is-visible .section-card:nth-child(2),
-  .reveal.is-visible .event-block:nth-child(2) { animation-delay: 0.2s; }
-  .reveal.is-visible .section-card:nth-child(3),
-  .reveal.is-visible .event-block:nth-child(3) { animation-delay: 0.3s; }
-  .reveal.is-visible .section-card:nth-child(4),
-  .reveal.is-visible .event-block:nth-child(4) { animation-delay: 0.4s; }
-  .reveal.is-visible .section-card:nth-child(5),
-  .reveal.is-visible .event-block:nth-child(5) { animation-delay: 0.5s; }
-
-  @keyframes card-enter {
-    from {
-      opacity: 0;
-      transform: translateY(16px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
+    transform: translateY(0);
   }
 
   /* ── Section card ──────────────────────────────────────── */
@@ -421,8 +372,9 @@ const appShellBackgroundPhoto = "/gate-escarcha.png";
     height: 100vh;
     height: 100svh;
     border-radius: 0;
-    background-color: #0a0a0c;
-    background-image: var(--hero-bg-image, linear-gradient(135deg, #8f9b7a, #7f5d49));
+    background:
+      linear-gradient(180deg, rgba(66, 49, 39, 0.22), rgba(66, 49, 39, 0.62)),
+      var(--hero-bg-image, linear-gradient(135deg, #8f9b7a, #7f5d49));
     background-position: center;
     background-size: cover;
     display: flex;
@@ -461,19 +413,16 @@ const appShellBackgroundPhoto = "/gate-escarcha.png";
   }
 
   .hero-overlay {
-    width: 100%;
-    padding: 2.8rem 1.5rem;
-    background: rgba(0, 0, 0, 0.56);
-    backdrop-filter: blur(2px);
-    -webkit-backdrop-filter: blur(2px);
     text-align: center;
     color: #fff;
+    width: min(620px, 92vw);
+    min-height: 100%;
+    padding: 4.3rem 1.3rem 1rem;
     position: relative;
     z-index: 2;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    gap: 0;
+    justify-content: center;
   }
 
   .hero-date-row {
@@ -492,11 +441,11 @@ const appShellBackgroundPhoto = "/gate-escarcha.png";
   }
 
   .hero-date {
-    letter-spacing: 0.5em;
-    font-size: 0.88rem;
+    letter-spacing: 0.09em;
+    font-size: 0.95rem;
     text-transform: uppercase;
-    opacity: 0.88;
-    color: #fff;
+    opacity: 0.94;
+    color: #f2f5f7;
     margin: 0;
   }
 
@@ -513,55 +462,79 @@ const appShellBackgroundPhoto = "/gate-escarcha.png";
 
   .hero-name {
     display: block;
-    font-size: clamp(3rem, 8.5vw, 6.5rem);
+    font-size: clamp(2.95rem, 10.8vw, 4.5rem);
     font-weight: 400;
     font-family: var(--font-script);
-    line-height: 0.98;
+    line-height: 0.95;
   }
 
   .hero-amp {
-    display: none;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    border: 2px solid rgba(214, 228, 215, 0.95);
+    background: rgba(232, 239, 227, 0.88);
+    color: #597050;
+    display: grid;
+    place-items: center;
+    font-size: 1.8rem;
+    font-weight: 700;
+    text-shadow: none;
   }
 
   .hero-names-line {
-    width: min(480px, 78%);
+    width: min(300px, 76vw);
     height: 1px;
-    background: rgba(242, 245, 247, 0.65);
-    margin: 0.85rem auto 1.1rem;
+    background: rgba(242, 245, 247, 0.72);
+    margin: 0 auto 0.95rem;
     display: block;
   }
 
   .hero-quote-wrap {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    display: grid;
+    justify-items: center;
+    gap: 0.2rem;
   }
 
   .hero-quote {
-    max-width: 520px;
+    max-width: 500px;
     margin: 0;
-    color: rgba(255, 255, 255, 0.90);
-    font-size: 1.05rem;
-    font-family: 'Inria Serif', Georgia, serif;
-    font-style: italic;
+    color: #f4f6f7;
+    font-size: 1.03rem;
     line-height: 1.35;
+  }
+
+  .hero-quote-mark {
+    width: 18px;
+    height: 18px;
+    opacity: 0.95;
+    will-change: transform;
+  }
+
+  .hero-quote-open {
+    margin-bottom: 0.15rem;
+    animation: quote-mark-drift 3.6s ease-in-out infinite;
+  }
+
+  .hero-quote-close {
+    margin-top: 0.15rem;
+    animation: quote-mark-drift 3.6s ease-in-out infinite reverse;
   }
 
   .hero-scroll {
     position: absolute;
     left: 50%;
-    bottom: 1rem;
+    bottom: 0.65rem;
     transform: translateX(-50%);
     display: grid;
     justify-items: center;
-    z-index: 3;
     animation: bounce 2.2s infinite;
   }
 
   .hero-scroll img {
     width: 24px;
     height: 24px;
-    opacity: 0.82;
+    opacity: 0.92;
   }
 
   /* ── Welcome gate ──────────────────────────────────────── */
@@ -569,65 +542,29 @@ const appShellBackgroundPhoto = "/gate-escarcha.png";
     position: fixed;
     inset: 0;
     z-index: 140;
-    background-color: var(--surface);
-    background-image: url('/gate-escarcha.png');
-    background-size: cover;
-    background-position: center;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 0;
+    background: rgba(37, 28, 22, 0.56);
+    display: grid;
+    place-items: center;
     padding: 1rem;
-    overflow: hidden;
   }
 
   .welcome-gate[hidden] {
     display: none;
   }
 
-  .welcome-gate-ribbons {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    pointer-events: none;
-    z-index: 0;
-  }
-
-  .welcome-gate-seal {
-    width: 160px;
-    height: 160px;
-    object-fit: contain;
-    display: block;
-    position: absolute;
-    top: 25%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    z-index: 2;
-    pointer-events: none;
-    filter: drop-shadow(0 4px 12px rgba(0,0,0,0.4));
-  }
-
   .welcome-card {
-    width: min(100%, 440px);
+    width: min(460px, 92vw);
     background: var(--surface);
-    border: 1px solid var(--primary);
-    border-radius: 20px;
-    box-shadow: 0 24px 48px rgba(0,0,0,0.5);
-    padding: 1.6rem 1.4rem;
+    border: 1px solid var(--line);
+    box-shadow: var(--shadow-md);
+    padding: 1.3rem 1.1rem;
     text-align: center;
-    position: relative;
-    z-index: 2;
   }
 
   .welcome-card h2 {
-    color: #ffffff;
     margin-bottom: 0.3rem;
   }
   .welcome-card p {
-    color: rgba(255,255,255,0.88);
     margin-bottom: 0.9rem;
   }
 
@@ -636,45 +573,14 @@ const appShellBackgroundPhoto = "/gate-escarcha.png";
     gap: 0.55rem;
   }
   .welcome-actions .secondary {
-    background: var(--primary);
+    background: transparent;
+    color: var(--primary);
     border: 1px solid var(--primary);
-    border-radius: 20px;
-    color: #1a1508;
-    width: 100%;
-    font-weight: 700;
-    transition: all 0.2s ease;
-  }
-  .welcome-actions .secondary:hover {
-    background: #E8C84A;
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(212, 175, 55, 0.35);
   }
   .welcome-actions .plain {
-    background: transparent;
-    border: 1px solid var(--primary);
-    border-radius: 20px;
-    color: var(--primary);
-    width: 100%;
-    font-weight: 600;
-    transition: all 0.2s ease;
-  }
-  .welcome-actions .plain:hover {
-    background: var(--primary-soft);
-    color: var(--primary);
-    transform: translateY(-2px);
-  }
-
-  .welcome-gate-disco {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: clamp(120px, 18vw, 220px);
-    object-fit: cover;
-    object-position: center bottom;
-    pointer-events: none;
-    z-index: 1;
-    opacity: 0.95;
+    background: var(--surface);
+    color: var(--text);
+    border: 1px solid var(--line);
   }
 
   /* ── Countdown section ─────────────────────────────────── */
@@ -722,7 +628,6 @@ const appShellBackgroundPhoto = "/gate-escarcha.png";
   .guest-closing {
     margin: 0.45rem 0 0;
     font-size: 1.22rem;
-    font-weight: 600;
   }
 
   /* ── Event section ─────────────────────────────────────── */
@@ -739,10 +644,10 @@ const appShellBackgroundPhoto = "/gate-escarcha.png";
     max-width: 100%;
     padding: 0.74rem 1.35rem;
     border-radius: 999px;
-    background: var(--surface-soft);
+    background: #f7efe4;
     border: 1px solid var(--line);
     text-decoration: none;
-    color: var(--text);
+    color: #5a4b42;
     font-weight: 600;
     transition: all 0.2s ease;
     font-size: 1.15rem;
@@ -750,8 +655,8 @@ const appShellBackgroundPhoto = "/gate-escarcha.png";
 
   .pill-btn:hover {
     transform: translateY(-2px);
-    background: var(--primary-soft);
-    border-color: var(--primary);
+    background: #efe2d2;
+    border-color: #d6c0a6;
   }
 
   .pill-btn:disabled {
@@ -865,21 +770,17 @@ const appShellBackgroundPhoto = "/gate-escarcha.png";
     color: #fff;
   }
   .action-confirm:hover {
-    background: #B8962E;
-    border-color: #B8962E;
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(212, 175, 55, 0.35);
+    background: #5f7556;
+    border-color: #5f7556;
   }
 
   .action-decline {
-    background: transparent;
-    border: 1px solid white;
-    color: white;
+    background: var(--danger);
+    border-color: var(--danger);
+    color: #fff;
   }
   .action-decline:hover {
-    background: var(--danger-soft);
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(192, 80, 77, 0.3);
+    background: #a54242;
   }
 
   .action-host {
@@ -910,28 +811,100 @@ const appShellBackgroundPhoto = "/gate-escarcha.png";
     border-color: var(--primary);
   }
   .event-actions-status.is-declined {
-    background: var(--danger-soft);
-    color: #E8A0A0;
+    background: #f8eaea;
+    color: var(--danger);
     border-color: var(--danger);
   }
 
-  /* ── Bolas decorativas ─────────────────────────────────── */
-  .bolas-band {
+  /* ── Gallery ───────────────────────────────────────────── */
+  .gallery-carousel {
+    margin-top: 0.95rem;
+    overflow: hidden;
+    border: 1px solid #e7d9c8;
+    background: #f7eee3;
+    padding: 0.75rem;
+    max-width: 100%;
+  }
+
+  .gallery-quote-wrap {
+    display: grid;
+    justify-items: center;
+    gap: 0.18rem;
+    margin-top: 0.15rem;
+  }
+  .gallery-quote {
+    margin: 0;
+    text-align: center;
+  }
+
+  .gallery-quote-mark {
+    width: 16px;
+    height: 16px;
+    opacity: 0.95;
+    display: block;
+    background: var(--primary);
+    -webkit-mask-position: center;
+    -webkit-mask-repeat: no-repeat;
+    -webkit-mask-size: contain;
+    mask-position: center;
+    mask-repeat: no-repeat;
+    mask-size: contain;
+    will-change: transform;
+  }
+  .gallery-quote-open {
+    -webkit-mask-image: url("/comilla_apertura.svg");
+    mask-image: url("/comilla_apertura.svg");
+    animation: quote-mark-drift 3.6s ease-in-out infinite;
+  }
+  .gallery-quote-close {
+    -webkit-mask-image: url("/comilla_cierre.svg");
+    mask-image: url("/comilla_cierre.svg");
+    animation: quote-mark-drift 3.6s ease-in-out infinite reverse;
+  }
+
+  .gallery-track {
+    display: flex;
+    width: max-content;
+    gap: 0.85rem;
+    animation: gallery-scroll 28s linear infinite;
+  }
+  .gallery-track:hover {
+    animation-play-state: paused;
+  }
+  @keyframes gallery-scroll {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(-50%);
+    }
+  }
+
+  .gallery-photo {
+    width: min(320px, 58vw);
+    max-width: 90vw;
+    min-height: 370px;
+    border-radius: 0;
+    background: #f3e7d9;
+    border: 1px solid #e7d9c8;
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+    flex: 0 0 auto;
+  }
+
+  .gallery-photo img {
     width: 100%;
-    min-height: clamp(200px, 28vw, 360px);
-    background: url('/bolas-bg.png') center / cover no-repeat;
-    display: none;
+    height: 100%;
+    object-fit: cover;
+    display: block;
   }
 
-  .bolas-final-section {
-    background: url('/bolas-bg.png') center / cover no-repeat;
-  }
-
-  .bolas-final-card {
-    background: rgba(13, 13, 13, 0.80) !important;
-    border-color: rgba(212, 175, 55, 0.40) !important;
-    backdrop-filter: blur(4px);
-    -webkit-backdrop-filter: blur(4px);
+  .gallery-demo-note {
+    text-align: center;
+    font-size: 0.95rem;
+    color: var(--muted);
+    margin-top: 0.65rem;
+    margin-bottom: 0;
   }
 
   /* ── Music FAB ─────────────────────────────────────────── */
@@ -942,29 +915,24 @@ const appShellBackgroundPhoto = "/gate-escarcha.png";
     width: 58px;
     height: 58px;
     border-radius: 50%;
-    border: 1px solid var(--primary);
-    background: var(--surface);
+    border: 1px solid #d6c4b2;
+    background: rgba(252, 245, 236, 0.95);
     font-size: 1.15rem;
     z-index: 60;
     color: var(--primary);
-    box-shadow: 0 12px 25px rgba(0, 0, 0, 0.35);
+    box-shadow: 0 12px 25px rgba(75, 58, 44, 0.2);
     display: grid;
     place-items: center;
     padding: 0;
     line-height: 0;
     -webkit-tap-highlight-color: transparent;
     outline: none;
-    transition: all 0.24s ease;
-  }
-  .music-fab:hover {
-    transform: scale(1.08);
-    background: var(--primary-soft);
-    box-shadow: 0 6px 20px rgba(212, 175, 55, 0.25);
+    transition: transform 0.24s ease;
   }
   .music-fab:focus-visible {
     box-shadow:
-      0 0 0 3px rgba(212, 175, 55, 0.28),
-      0 12px 25px rgba(0, 0, 0, 0.35);
+      0 0 0 3px rgba(111, 135, 101, 0.28),
+      0 12px 25px rgba(75, 58, 44, 0.2);
   }
   .music-fab.is-playing {
     animation: pulse 1.4s infinite;
@@ -1164,10 +1132,10 @@ const appShellBackgroundPhoto = "/gate-escarcha.png";
   }
   @keyframes pulse {
     0% {
-      box-shadow: 0 0 0 0 rgba(212, 175, 55, 0.35);
+      box-shadow: 0 0 0 0 rgba(55, 95, 143, 0.32);
     }
     100% {
-      box-shadow: 0 0 0 14px rgba(212, 175, 55, 0);
+      box-shadow: 0 0 0 14px rgba(55, 95, 143, 0);
     }
   }
 
@@ -1190,6 +1158,10 @@ const appShellBackgroundPhoto = "/gate-escarcha.png";
     }
     .event-block {
       padding: 1.1rem 1rem;
+    }
+    .gallery-photo {
+      width: min(260px, 62vw);
+      min-height: 320px;
     }
   }
 
@@ -1217,7 +1189,8 @@ const appShellBackgroundPhoto = "/gate-escarcha.png";
       border-radius: 0;
     }
     .hero-overlay {
-      padding: 2.2rem 1rem;
+      width: min(420px, 88vw);
+      padding: 4.9rem 1rem 0.9rem;
     }
     .hero-ornament-top {
       top: -24px;
@@ -1244,7 +1217,7 @@ const appShellBackgroundPhoto = "/gate-escarcha.png";
       right: -22px;
     }
     .hero-name {
-      font-size: clamp(2.4rem, 10vw, 3.5rem);
+      font-size: clamp(2.8rem, 14.2vw, 4.2rem);
     }
     .hero-amp {
       width: 48px;
@@ -1283,6 +1256,16 @@ const appShellBackgroundPhoto = "/gate-escarcha.png";
       width: min(100%, 280px);
       margin-inline: auto;
     }
+    .gallery-carousel {
+      padding: 0.55rem;
+    }
+    .gallery-track {
+      gap: 0.55rem;
+    }
+    .gallery-photo {
+      width: min(220px, 70vw);
+      min-height: 250px;
+    }
     .section-divider img {
       height: 22px;
     }
@@ -1312,10 +1295,11 @@ const appShellBackgroundPhoto = "/gate-escarcha.png";
       padding-bottom: 2rem;
     }
     .hero-overlay {
-      padding: 2rem 1rem;
+      width: min(360px, 92vw);
+      padding: 4.2rem 0.8rem 0.9rem;
     }
     .hero-name {
-      font-size: clamp(2rem, 11vw, 2.8rem);
+      font-size: clamp(2.35rem, 14vw, 3.2rem);
     }
     .hero-quote {
       font-size: 1rem;
@@ -1352,6 +1336,8 @@ const appShellBackgroundPhoto = "/gate-escarcha.png";
   @media (prefers-reduced-motion: reduce) {
     .hero-ornament-top,
     .hero-ornament-bottom,
+    .hero-quote-open,
+    .hero-quote-close,
     .section-divider img,
     .final-heart,
     .final-cinta-left,
