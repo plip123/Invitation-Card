@@ -20,7 +20,7 @@ const eventMapUrl = `https://www.google.com/maps?q=${eventCoords}&z=17`;
 // Música: reproductor de YouTube. Las normas de YouTube exigen que quede
 // visible y de al menos 200×200 px, por eso va en su propia sección.
 const songVideoId = "XaEHo83kWZs"; // Mitski — My Love Mine All Mine (Instrumental)
-const songStartSeconds = 40; // la primera vez empieza aquí; el bucle vuelve al inicio
+const songStartSeconds = 41; // la primera vez empieza aquí; el bucle vuelve al inicio
 const songEmbedUrl =
   `https://www.youtube-nocookie.com/embed/${songVideoId}?` +
   new URLSearchParams({
@@ -697,6 +697,13 @@ const marqueePhotos = [...galleryPhotos, ...galleryPhotos];
     font-weight: 700;
     letter-spacing: 0.01em;
     line-height: 1.1;
+  }
+
+  :global(.guest-invitee-joiner) {
+    font-size: clamp(1.6rem, 2.4vw, 1.9rem);
+    font-style: italic;
+    color: var(--muted);
+    line-height: 1;
   }
 
   .guest-companions,
@@ -1595,10 +1602,18 @@ const marqueePhotos = [...galleryPhotos, ...galleryPhotos];
     const companions = Math.max(0, maxGuests - names.length);
     const total = names.length + companions;
     guestInviteesList.innerHTML = "";
-    names.forEach((name) => {
+    // Enumeración en español: "A y B", "A, B y C", "A, B, C y D"...
+    const last = names.length - 1;
+    names.forEach((name, index) => {
+      if (names.length >= 2 && index === last) {
+        const joiner = document.createElement("li");
+        joiner.className = "guest-invitee-joiner";
+        joiner.textContent = "y";
+        guestInviteesList.appendChild(joiner);
+      }
       const li = document.createElement("li");
       li.className = "guest-invitee-name";
-      li.textContent = name;
+      li.textContent = index < last - 1 ? `${name},` : name;
       guestInviteesList.appendChild(li);
     });
     guestCompanions.textContent =
@@ -1707,7 +1722,7 @@ const marqueePhotos = [...galleryPhotos, ...galleryPhotos];
 
     setPaused();
 
-    // El segundo de inicio (40) va en el parámetro `start` del iframe.
+    // El segundo de inicio (41) va en el parámetro `start` del iframe.
     let player: YTPlayer | null = null;
     let wantPlay = false;
     let playCheck: number | undefined;
@@ -1753,7 +1768,7 @@ const marqueePhotos = [...galleryPhotos, ...galleryPhotos];
                 wantPlay = false;
                 setPaused();
               } else if (e.data === YT_ENDED && wantPlay) {
-                // Bucle: la primera vez empieza en el segundo 40, luego desde 0.
+                // Bucle: la primera vez empieza en el segundo 41, luego desde 0.
                 player?.seekTo(0, true);
                 player?.playVideo();
               }
