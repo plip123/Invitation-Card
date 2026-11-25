@@ -7,13 +7,31 @@ import EventDetails from "../components/EventDetails.astro";
 import QRCode from "../components/QRCode.astro";
 import RSVP from "../components/RSVP.astro";
 
-// ── Demo data — no personal info ──────────────────────────────────────────────
+// ── Datos del evento ──────────────────────────────────────────────────────────
 const eventTitle = "Boda Civil";
-const calendarTitle = "Boda de Sofía y Mateo";
-const eventDateLabel = "Domingo 12 de Septiembre — 05:00 PM a 11:00 PM";
-const eventVenue = "Salón Jardín Las Magnolias";
-const eventAddress = "Urbanización Los Pinos, Calle Principal";
-const eventMapUrl = "https://maps.google.com";
+const calendarTitle = "Boda de Dari y Luis";
+const eventDateLabel = "Sábado 28 de Noviembre — 12:00 PM";
+// Pendientes: nombre del lugar y dirección escrita. Si están vacíos no se muestran.
+const eventVenue = "";
+const eventAddress = "";
+const eventCoords = "10.4719658,-66.9610391";
+const eventMapUrl = `https://www.google.com/maps?q=${eventCoords}&z=17`;
+
+// Música: reproductor de YouTube. Las normas de YouTube exigen que quede
+// visible y de al menos 200×200 px, por eso va en su propia sección.
+const songVideoId = "XaEHo83kWZs"; // Mitski — My Love Mine All Mine (Instrumental)
+const songStartSeconds = 40; // la primera vez empieza aquí; el bucle vuelve al inicio
+const songEmbedUrl =
+  `https://www.youtube-nocookie.com/embed/${songVideoId}?` +
+  new URLSearchParams({
+    enablejsapi: "1",
+    start: String(songStartSeconds),
+    playsinline: "1",
+    rel: "0",
+  }).toString();
+
+// Galería "Retratos de Nuestro Amor" oculta por el momento.
+const showGallery = false;
 
 const formatGcal = (d: Date) =>
   d
@@ -21,11 +39,13 @@ const formatGcal = (d: Date) =>
     .replace(/[-:]/g, "")
     .replace(/\.\d{3}Z$/, "Z");
 
-const s = new Date("2027-09-12T17:00:00-04:00");
-const e = new Date("2027-09-12T23:00:00-04:00");
+const s = new Date("2026-11-28T12:00:00-04:00");
+const e = new Date("2026-11-28T18:00:00-04:00");
 const calDates = formatGcal(s) + "/" + formatGcal(e);
-const calDetails = eventDateLabel + ". Lugar: " + eventVenue + ".";
-const calLocation = eventVenue + ", " + eventAddress;
+const calDetails =
+  eventDateLabel + (eventVenue ? ". Lugar: " + eventVenue : "") + ".";
+const calLocation =
+  [eventVenue, eventAddress].filter(Boolean).join(", ") || eventCoords;
 const calParams = new URLSearchParams({
   action: "TEMPLATE",
   text: calendarTitle,
@@ -37,7 +57,7 @@ const calendarEventUrl =
   "https://calendar.google.com/calendar/render?" + calParams.toString();
 
 // Hero & gallery photos
-const heroBackgroundPhoto = "/fotos/portada.jpg";
+const heroBackgroundPhoto = "/fotos/portada-dari-luis.jpg";
 const galleryPhotos = [1, 2, 3, 4].map((n) => ({
   src: `/fotos/${n}.jpg`,
   alt: `Foto ${n}`,
@@ -46,7 +66,7 @@ const galleryPhotos = [1, 2, 3, 4].map((n) => ({
 const marqueePhotos = [...galleryPhotos, ...galleryPhotos];
 ---
 
-<BaseLayout title="Invitación de Boda — Demo">
+<BaseLayout title="Boda de Dari & Luis">
   <main>
     <!-- Welcome gate (music) -->
     <section id="welcome-gate" class="welcome-gate" aria-modal="true">
@@ -72,12 +92,6 @@ const marqueePhotos = [...galleryPhotos, ...galleryPhotos];
       aria-label="Reproducir música"
       aria-pressed="false">▶</button
     >
-    <audio
-      id="background-audio"
-      src="/audio/music.mp3"
-      loop
-      preload="none"
-      playsinline></audio>
 
     <!-- Hero -->
     <section id="portada" class="hero">
@@ -98,13 +112,13 @@ const marqueePhotos = [...galleryPhotos, ...galleryPhotos];
         <div class="hero-overlay">
           <div class="hero-date-row">
             <span class="hero-line" aria-hidden="true"></span>
-            <p class="hero-date">12.09.2027</p>
+            <p class="hero-date">28.11.2026</p>
             <span class="hero-line" aria-hidden="true"></span>
           </div>
-          <h1 class="hero-names" aria-label="Sofía y Mateo">
-            <span class="hero-name">Sofía</span>
+          <h1 class="hero-names" aria-label="Dari y Luis">
+            <span class="hero-name">Dari</span>
             <span class="hero-amp">&</span>
-            <span class="hero-name">Mateo</span>
+            <span class="hero-name">Luis</span>
           </h1>
           <span class="hero-names-line" aria-hidden="true"></span>
           <div class="hero-quote-wrap">
@@ -168,13 +182,17 @@ const marqueePhotos = [...galleryPhotos, ...galleryPhotos];
           <a href={calendarEventUrl} target="_blank" class="pill-btn">Agendar</a
           >
         </div>
-        <div class="event-block">
-          <h3>Lugar</h3>
-          <p>{eventVenue}</p>
-        </div>
+        {
+          eventVenue && (
+            <div class="event-block">
+              <h3>Lugar</h3>
+              <p>{eventVenue}</p>
+            </div>
+          )
+        }
         <div class="event-block">
           <h3>Dirección</h3>
-          <p>{eventAddress}</p>
+          {eventAddress && <p>{eventAddress}</p>}
           <a href={eventMapUrl} target="_blank" class="pill-btn"
             >¿Cómo llegar?</a
           >
@@ -208,6 +226,7 @@ const marqueePhotos = [...galleryPhotos, ...galleryPhotos];
       </div>
 
       <!-- Gallery -->
+      {showGallery && (
       <section id="galeria" class="reveal section-container">
         <div class="section-card">
           <h2>Retratos de Nuestro Amor</h2>
@@ -235,8 +254,27 @@ const marqueePhotos = [...galleryPhotos, ...galleryPhotos];
           </div>
         </div>
       </section>
+      )}
 
       <section id="event-details" class="reveal section-container"><EventDetails /></section>
+
+      <!-- Nuestra canción (el botón flotante ▶/❚❚ controla este reproductor) -->
+      <section id="nuestra-cancion" class="reveal section-container">
+        <div class="section-card our-song-card">
+          <h2>Nuestra canción</h2>
+          <p class="our-song-meta">My Love Mine All Mine · Mitski</p>
+          <div class="our-song-player">
+            <iframe
+              id="song-player"
+              src={songEmbedUrl}
+              title="Nuestra canción: My Love Mine All Mine (instrumental)"
+              allow="autoplay; encrypted-media; picture-in-picture"
+              referrerpolicy="strict-origin-when-cross-origin"
+              allowfullscreen></iframe>
+          </div>
+        </div>
+      </section>
+
       <section id="songs" class="reveal section-container"><SongRequest /></section>
 
       <section id="photos" class="reveal section-container">
@@ -269,7 +307,7 @@ const marqueePhotos = [...galleryPhotos, ...galleryPhotos];
               alt=""
             />
           </div>
-          <h2>Sofía &amp; Mateo</h2>
+          <h2>Dari &amp; Luis</h2>
           <p>
             Gracias por acompañarnos en este capítulo tan importante de nuestra
             historia.
@@ -372,18 +410,49 @@ const marqueePhotos = [...galleryPhotos, ...galleryPhotos];
     height: 100vh;
     height: 100svh;
     border-radius: 0;
-    background:
-      linear-gradient(180deg, rgba(66, 49, 39, 0.22), rgba(66, 49, 39, 0.62)),
-      var(--hero-bg-image, linear-gradient(135deg, #8f9b7a, #7f5d49));
-    background-position: center;
-    background-size: cover;
+    background: #1b1712;
     display: flex;
     align-items: center;
     justify-content: center;
     overflow: hidden;
     position: relative;
+    isolation: isolate;
     border: none;
     box-shadow: var(--shadow-md);
+  }
+
+  /* Relleno lateral: la misma foto ampliada y desenfocada. Solo se ve donde
+     la foto completa (capa ::after) no llega a cubrir. */
+  .hero-image-placeholder::before {
+    content: "";
+    position: absolute;
+    inset: -48px;
+    background: var(--hero-bg-image, linear-gradient(135deg, #8f9b7a, #7f5d49))
+      center / cover no-repeat;
+    filter: blur(28px) brightness(0.8);
+    transform: scale(1.08);
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  /* Foto completa (sin recortes) + velo para que el texto se lea. */
+  .hero-image-placeholder::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(180deg, rgba(66, 49, 39, 0.22), rgba(66, 49, 39, 0.62)),
+      var(--hero-bg-image, linear-gradient(135deg, #8f9b7a, #7f5d49))
+        center / contain no-repeat;
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  /* Pantallas más angostas que la foto (móvil vertical): llenar sin franjas. */
+  @media (max-aspect-ratio: 2/3) {
+    .hero-image-placeholder::after {
+      background-size: auto, cover;
+    }
   }
 
   .hero-ornament {
@@ -418,11 +487,17 @@ const marqueePhotos = [...galleryPhotos, ...galleryPhotos];
     width: min(620px, 92vw);
     min-height: 100%;
     padding: 4.3rem 1.3rem 1rem;
+    /* En la foto de portada las caras quedan a ~51 % de la altura de la
+       pantalla (la foto siempre se ajusta por alto). El texto termina al
+       48 % para quedar justo encima de ellas, sin taparlas. */
+    padding-bottom: 52vh;
+    padding-bottom: 52svh;
     position: relative;
     z-index: 2;
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    /* "safe": si el texto no cabe (pantallas muy bajas) se pega arriba en vez de salirse. */
+    justify-content: safe flex-end;
   }
 
   .hero-date-row {
@@ -948,6 +1023,37 @@ const marqueePhotos = [...galleryPhotos, ...galleryPhotos];
     transform: translateX(1.5px);
   }
 
+  /* ── Nuestra canción ───────────────────────────────────── */
+  .our-song-card {
+    text-align: center;
+    display: grid;
+    gap: 0.5rem;
+  }
+  .our-song-card h2 {
+    margin-bottom: 0;
+  }
+  .our-song-meta {
+    margin: 0;
+    color: var(--muted);
+    font-style: italic;
+  }
+  /* YouTube exige un reproductor visible de al menos 200×200 px */
+  .our-song-player {
+    width: 100%;
+    max-width: 560px;
+    margin: 0.5rem auto 0;
+    aspect-ratio: 16 / 9;
+    min-height: 200px;
+    border: 1px solid var(--line);
+    background: #000;
+  }
+  .our-song-player iframe {
+    display: block;
+    width: 100%;
+    height: 100%;
+    border: 0;
+  }
+
   /* ── Final section ─────────────────────────────────────── */
   .final-actions {
     text-align: center;
@@ -1190,7 +1296,8 @@ const marqueePhotos = [...galleryPhotos, ...galleryPhotos];
     }
     .hero-overlay {
       width: min(420px, 88vw);
-      padding: 4.9rem 1rem 0.9rem;
+      padding-top: 4.9rem;
+      padding-inline: 1rem;
     }
     .hero-ornament-top {
       top: -24px;
@@ -1296,7 +1403,8 @@ const marqueePhotos = [...galleryPhotos, ...galleryPhotos];
     }
     .hero-overlay {
       width: min(360px, 92vw);
-      padding: 4.2rem 0.8rem 0.9rem;
+      padding-top: 4.2rem;
+      padding-inline: 0.8rem;
     }
     .hero-name {
       font-size: clamp(2.35rem, 14vw, 3.2rem);
@@ -1330,6 +1438,14 @@ const marqueePhotos = [...galleryPhotos, ...galleryPhotos];
     :global(.gift-container),
     :global(.countdown-container) {
       padding: 1.15rem 0.85rem;
+    }
+  }
+
+  /* Teléfonos bajos (p. ej. 375×667): nombres un poco más pequeños para que
+     el texto de la portada no llegue a las caras de la foto. */
+  @media (max-width: 768px) and (max-height: 700px) {
+    .hero-name {
+      font-size: clamp(2.2rem, 12vw, 2.9rem);
     }
   }
 
@@ -1381,9 +1497,9 @@ const marqueePhotos = [...galleryPhotos, ...galleryPhotos];
   const enterWithoutMusicBtn = document.getElementById(
     "enter-without-music",
   ) as HTMLButtonElement | null;
-  const backgroundAudio = document.getElementById(
-    "background-audio",
-  ) as HTMLAudioElement | null;
+  const songIframe = document.getElementById(
+    "song-player",
+  ) as HTMLIFrameElement | null;
   const eventConfirmBtn = document.getElementById(
     "event-confirm-action",
   ) as HTMLButtonElement | null;
@@ -1400,10 +1516,6 @@ const marqueePhotos = [...galleryPhotos, ...galleryPhotos];
     "confirmacion",
   ) as HTMLElement | null;
 
-  if (backgroundAudio) {
-    backgroundAudio.volume = 0.42;
-    backgroundAudio.loop = true;
-  }
   if (!window.location.hash)
     window.scrollTo({ top: 0, left: 0, behavior: "auto" });
 
@@ -1528,9 +1640,53 @@ const marqueePhotos = [...galleryPhotos, ...galleryPhotos];
     revealItems.forEach((el) => obs.observe(el));
   }
 
+  // ── YouTube IFrame API ────────────────────────────────────────────────────
+  type YTPlayer = {
+    playVideo(): void;
+    pauseVideo(): void;
+    seekTo(seconds: number, allowSeekAhead: boolean): void;
+    setVolume(volume: number): void;
+    getPlayerState(): number;
+  };
+  type YTNamespace = {
+    Player: new (
+      el: HTMLIFrameElement,
+      opts: {
+        events: {
+          onReady?: () => void;
+          onStateChange?: (e: { data: number }) => void;
+        };
+      },
+    ) => YTPlayer;
+  };
+  const ytWindow = window as Window & {
+    YT?: YTNamespace;
+    onYouTubeIframeAPIReady?: () => void;
+  };
+  const YT_ENDED = 0;
+  const YT_PLAYING = 1;
+  const YT_PAUSED = 2;
+  const YT_BUFFERING = 3;
+
+  function loadYouTubeApi(): Promise<YTNamespace> {
+    return new Promise((resolve, reject) => {
+      if (ytWindow.YT?.Player) return resolve(ytWindow.YT);
+      const previous = ytWindow.onYouTubeIframeAPIReady;
+      ytWindow.onYouTubeIframeAPIReady = () => {
+        previous?.();
+        if (ytWindow.YT) resolve(ytWindow.YT);
+      };
+      const tag = document.createElement("script");
+      tag.src = "https://www.youtube.com/iframe_api";
+      tag.async = true;
+      tag.onerror = () => reject(new Error("YouTube IFrame API no cargó"));
+      document.head.appendChild(tag);
+    });
+  }
+
   // ── Music FAB ─────────────────────────────────────────────────────────────
   function initMusicFab() {
-    if (!musicFab || !backgroundAudio || !welcomeGate) return;
+    if (!musicFab || !songIframe || !welcomeGate) return;
 
     const renderIcon = (mode: "play" | "pause") => {
       const src = mode === "pause" ? "/pause.svg" : "/play.svg";
@@ -1551,48 +1707,68 @@ const marqueePhotos = [...galleryPhotos, ...galleryPhotos];
 
     setPaused();
 
-    // La música debe comenzar desde el segundo 35 la primera vez que suena.
-    const INTRO_START = 37;
-    let introStartDone = false;
-    const seekToIntro = () => {
-      try {
-        if (
-          !Number.isFinite(backgroundAudio.duration) ||
-          backgroundAudio.duration > INTRO_START
-        ) {
-          backgroundAudio.currentTime = INTRO_START;
+    // El segundo de inicio (40) va en el parámetro `start` del iframe.
+    let player: YTPlayer | null = null;
+    let wantPlay = false;
+    let playCheck: number | undefined;
+
+    // playVideo() debe llamarse dentro del clic para que el navegador lo permita.
+    const requestPlay = () => {
+      wantPlay = true;
+      setPlaying();
+      player?.playVideo();
+      // Si el navegador bloquea la reproducción (p. ej. algunos iPhone) o la
+      // API no cargó, el estado no cambia: se vuelve a mostrar ▶.
+      window.clearTimeout(playCheck);
+      playCheck = window.setTimeout(() => {
+        const state = player?.getPlayerState();
+        if (state !== YT_PLAYING && state !== YT_BUFFERING) {
+          wantPlay = false;
+          setPaused();
         }
-      } catch {}
+      }, 5000);
     };
-    // Se llama justo después de que play() arranca: en ese momento el audio
-    // ya está listo para buscar. Si aún no, se reintenta en "canplay".
-    const startFromIntro = () => {
-      if (introStartDone) return;
-      introStartDone = true;
-      if (backgroundAudio.readyState >= 1) seekToIntro();
-      else
-        backgroundAudio.addEventListener("canplay", seekToIntro, {
-          once: true,
+    const requestPause = () => {
+      wantPlay = false;
+      window.clearTimeout(playCheck);
+      setPaused();
+      player?.pauseVideo();
+    };
+
+    loadYouTubeApi()
+      .then((YT) => {
+        const ytPlayer = new YT.Player(songIframe, {
+          events: {
+            onReady: () => {
+              player = ytPlayer;
+              player.setVolume(42);
+              // El invitado ya pulsó "Entrar con música" antes de que cargara.
+              if (wantPlay) requestPlay();
+            },
+            onStateChange: (e) => {
+              if (e.data === YT_PLAYING) {
+                wantPlay = true;
+                setPlaying();
+              } else if (e.data === YT_PAUSED) {
+                wantPlay = false;
+                setPaused();
+              } else if (e.data === YT_ENDED && wantPlay) {
+                // Bucle: la primera vez empieza en el segundo 40, luego desde 0.
+                player?.seekTo(0, true);
+                player?.playVideo();
+              }
+            },
+          },
         });
-    };
+      })
+      .catch(() => setPaused());
 
     document.documentElement.style.overflow = "hidden";
     document.body.style.overflow = "hidden";
 
-    const openPage = async (withMusic: boolean) => {
-      if (withMusic) {
-        try {
-          backgroundAudio.muted = false;
-          await backgroundAudio.play();
-          startFromIntro();
-          setPlaying();
-        } catch {
-          setPaused();
-        }
-      } else {
-        backgroundAudio.pause();
-        setPaused();
-      }
+    const openPage = (withMusic: boolean) => {
+      if (withMusic) requestPlay();
+      else requestPause();
       welcomeGate.hidden = true;
       document.documentElement.style.overflow = "";
       document.body.style.overflow = "";
@@ -1601,19 +1777,9 @@ const marqueePhotos = [...galleryPhotos, ...galleryPhotos];
     enterWithMusicBtn?.addEventListener("click", () => openPage(true));
     enterWithoutMusicBtn?.addEventListener("click", () => openPage(false));
 
-    musicFab.addEventListener("click", async () => {
-      if (backgroundAudio.paused) {
-        try {
-          await backgroundAudio.play();
-          startFromIntro();
-          setPlaying();
-        } catch {
-          setPaused();
-        }
-      } else {
-        backgroundAudio.pause();
-        setPaused();
-      }
+    musicFab.addEventListener("click", () => {
+      if (wantPlay) requestPause();
+      else requestPlay();
     });
   }
 
