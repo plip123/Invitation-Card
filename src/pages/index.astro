@@ -11,9 +11,9 @@ import RSVP from "../components/RSVP.astro";
 const eventTitle = "Boda Civil";
 const calendarTitle = "Boda de Dari y Luis";
 const eventDateLabel = "Sábado 28 de Noviembre — 12:00 PM";
-// Pendientes: nombre del lugar y dirección escrita. Si están vacíos no se muestran.
+// Pendiente: nombre del lugar. Si está vacío no se muestra el bloque "Lugar".
 const eventVenue = "";
-const eventAddress = "";
+const eventAddress = "Caracas, Montalban 3, Edificio Titano I";
 const eventCoords = "10.4719658,-66.9610391";
 const eventMapUrl = `https://www.google.com/maps?q=${eventCoords}&z=17`;
 
@@ -32,6 +32,8 @@ const songEmbedUrl =
 
 // Galería "Retratos de Nuestro Amor" oculta por el momento.
 const showGallery = false;
+// Sección "Regalos" oculta por el momento.
+const showGifts = false;
 
 const formatGcal = (d: Date) =>
   d
@@ -281,11 +283,15 @@ const marqueePhotos = [...galleryPhotos, ...galleryPhotos];
         <div class="section-card photos-section"><QRCode /></div>
       </section>
 
-      <div class="section-divider section-divider-alt" aria-hidden="true">
-        <img src="/ondas05.svg" alt="" />
-      </div>
+      {showGifts && (
+        <>
+          <div class="section-divider section-divider-alt" aria-hidden="true">
+            <img src="/ondas05.svg" alt="" />
+          </div>
 
-      <section id="gifts" class="reveal section-container"><GiftInfo /></section>
+          <section id="gifts" class="reveal section-container"><GiftInfo /></section>
+        </>
+      )}
 
       <div class="section-divider section-divider-alt" aria-hidden="true">
         <img src="/lineas.svg" alt="" />

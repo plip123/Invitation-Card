@@ -1,5 +1,8 @@
 ---
-
+// Tarjetas ocultas por el momento (cambiar a true para mostrarlas).
+const showMenu = false;
+const showTransport = false;
+const visibleCards = 1 + Number(showMenu) + Number(showTransport);
 ---
 
 <div class="details-container">
@@ -14,7 +17,7 @@
   </div>
   <p>Información útil para que disfrutes el día sin preocupaciones.</p>
 
-  <div class="details-grid">
+  <div class:list={["details-grid", { "details-grid--single": visibleCards === 1 }]}>
     <article class="detail-card">
       <h3>
         <img
@@ -23,11 +26,12 @@
           class="detail-icon"
           aria-hidden="true"
         />
-        <span>Dress code</span>
+        <span>Código de vestimenta</span>
       </h3>
-      <p>Semi-formal / Cóctel</p>
+      <p>Formal / Cóctel, prohibido el color blanco.</p>
     </article>
 
+    {showMenu && (
     <article class="detail-card">
       <h3>
         <img src="/menu.svg" alt="" class="detail-icon" aria-hidden="true" />
@@ -38,7 +42,9 @@
         gastronomía local.
       </p>
     </article>
+    )}
 
+    {showTransport && (
     <article class="detail-card">
       <h3>
         <img src="/carro.svg" alt="" class="detail-icon" aria-hidden="true" />
@@ -50,6 +56,7 @@
         evento.
       </p>
     </article>
+    )}
   </div>
 </div>
 
@@ -91,6 +98,12 @@
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 1rem;
+  }
+
+  .details-grid--single {
+    grid-template-columns: 1fr;
+    max-width: 520px;
+    margin-inline: auto;
   }
 
   @media (max-width: 960px) {
